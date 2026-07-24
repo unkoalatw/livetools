@@ -7,15 +7,29 @@ const DEFAULT_EVENTS = [
   { id: 5, title: '晚安下播晚安', time: '20:35', durationMinutes: 10, icon: 'fa-moon' }
 ];
 
+const DEFAULT_MARQUEE = "🔥 歡迎來到直播間！點擊追蹤開啟小鈴鐺 | 💬 聊天室請保持禮貌 | 🎁 訂閱解鎖限定貼圖！";
+
+// State Variables
+let timerMode = 'auto'; // 'auto' or 'manual'
+let displayView = 'timeline'; // 'timeline' or 'marquee'
+let marqueeText = localStorage.getItem('obs_marquee_text') || DEFAULT_MARQUEE;
+let events = loadEventsFromSource();
+let activeIndex = 0;
+let isTimerRunning = true;
+let secondsLeftInStage = events[0] ? events[0].durationMinutes * 60 : 900;
+let timerInterval = null;
+
 // Helper to parse URL query parameters for OBS Browser Source customization
 function loadEventsFromSource() {
   const urlParams = new URLSearchParams(window.location.search);
   const eventsParam = urlParams.get('events');
   const modeParam = urlParams.get('mode');
+  const viewParam = urlParams.get('view');
+  const marqueeParam = urlParams.get('marquee');
 
-  if (modeParam) {
-    timerMode = modeParam;
-  }
+  if (modeParam) timerMode = modeParam;
+  if (viewParam) displayView = viewParam;
+  if (marqueeParam) marqueeText = decodeURIComponent(marqueeParam);
 
   if (eventsParam) {
     try {
@@ -44,18 +58,12 @@ function loadEventsFromSource() {
   return JSON.parse(localStorage.getItem('obs_timeline_events')) || DEFAULT_EVENTS;
 }
 
-// State Variables
-let timerMode = 'auto'; // 'auto' or 'manual'
-let events = loadEventsFromSource();
-let activeIndex = 0;
-let isTimerRunning = true;
-let secondsLeftInStage = events[0] ? events[0].durationMinutes * 60 : 900;
-let timerInterval = null;
-
 // DOM Elements
 const mainContainer = document.getElementById('main-container');
 const trackWrapper = document.getElementById('track-wrapper');
 const timelineContainer = document.getElementById('timeline-nodes-container');
+const marqueeContainer = document.getElementById('marquee-container');
+const marqueeTextContent = document.getElementById('marquee-text-content');
 const playPauseBtn = document.getElementById('play-pause-btn');
 
 // Auto Adapt Layout for Vertical (200x2000) or Horizontal (2000x200)
@@ -64,15 +72,16 @@ function updateLayoutOrientation() {
 
   if (isVertical) {
     mainContainer.className = "w-full h-full flex flex-col justify-center items-center p-3 relative z-10";
-    trackWrapper.className = "w-full h-full vertical-track-gradient rounded-3xl p-3 shadow-2xl border-2 border-white/50 backdrop-blur-md flex flex-col justify-center";
+    trackWrapper.className = "w-full h-full vertical-track-gradient rounded-3xl p-3 shadow-2xl border-2 border-white/50 backdrop-blur-md flex flex-col justify-center relative overflow-hidden";
     timelineContainer.className = "flex flex-col items-center justify-between gap-3 w-full h-full";
   } else {
     mainContainer.className = "w-full h-full flex justify-center items-center p-3 relative z-10";
-    trackWrapper.className = "w-full max-w-full h-auto track-gradient rounded-full p-2.5 shadow-2xl border-2 border-white/50 backdrop-blur-md";
+    trackWrapper.className = "w-full max-w-full h-auto track-gradient rounded-full p-2.5 shadow-2xl border-2 border-white/50 backdrop-blur-md relative overflow-hidden";
     timelineContainer.className = "flex items-center justify-between gap-3 w-full h-full";
   }
 
   renderTimelineNodes();
+  renderMarqueeText();
 }
 
 // Render Pill Nodes
@@ -104,6 +113,40 @@ function renderTimelineNodes() {
 
     timelineContainer.appendChild(pill);
   });
+}
+
+// Render Marquee Text
+function renderMarqueeText() {
+  if (marqueeTextContent) {
+    marqueeTextContent.innerHTML = `${escapeHtml(marqueeText)} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${escapeHtml(marqueeText)}`;
+  }
+}
+
+// Toggle Display View Mode (Timeline vs Marquee)
+function setDisplayView(view) {
+  displayView = view;
+  const btnTimeline = document.getElementById('btn-view-timeline');
+  const btnMarquee = document.getElementById('btn-view-marquee');
+
+  if (view === 'marquee') {
+    timelineContainer?.classList.add('hidden');
+    marqueeContainer?.classList.remove('hidden');
+    marqueeContainer?.classList.add('flex');
+
+    if (btnTimeline) btnTimeline.className = "py-1.5 text-[11px] rounded-md font-bold text-slate-400 hover:text-white border border-transparent transition";
+    if (btnMarquee) btnMarquee.className = "py-1.5 text-[11px] rounded-md font-bold bg-indigo-600 text-white border border-indigo-400/50 shadow transition";
+  } else {
+    marqueeContainer?.classList.add('hidden');
+    marqueeContainer?.classList.remove('flex');
+    timelineContainer?.classList.remove('hidden');
+
+    if (btnTimeline) btnTimeline.className = "py-1.5 text-[11px] rounded-md font-bold bg-indigo-600 text-white border border-indigo-400/50 shadow transition";
+    if (btnMarquee) btnMarquee.className = "py-1.5 text-[11px] rounded-md font-bold text-slate-400 hover:text-white border border-transparent transition";
+  }
+}
+
+function toggleDisplayView() {
+  setDisplayView(displayView === 'timeline' ? 'marquee' : 'timeline');
 }
 
 // Main Timer Loop
@@ -189,6 +232,12 @@ function toggleWholeControlPanel() {
 // Modal Events Editor
 function openEditModal() {
   const container = document.getElementById('modal-events-list');
+  const marqueeInput = document.getElementById('marquee-input-text');
+  
+  if (marqueeInput) {
+    marqueeInput.value = marqueeText;
+  }
+
   if (!container) return;
   container.innerHTML = '';
 
@@ -227,6 +276,14 @@ function addNewEventRow() {
 
 function saveEditedEvents() {
   const rows = document.querySelectorAll('#modal-events-list > div');
+  const marqueeInput = document.getElementById('marquee-input-text');
+  
+  if (marqueeInput) {
+    marqueeText = marqueeInput.value.trim() || DEFAULT_MARQUEE;
+    localStorage.setItem('obs_marquee_text', marqueeText);
+    renderMarqueeText();
+  }
+
   const newEvents = [];
   const defaultIcons = ['fa-comments', 'fa-gamepad', 'fa-users', 'fa-gift', 'fa-coffee', 'fa-trophy', 'fa-star'];
 
@@ -253,7 +310,9 @@ function saveEditedEvents() {
 
 function resetDefaultEvents() {
   events = [...DEFAULT_EVENTS];
+  marqueeText = DEFAULT_MARQUEE;
   localStorage.removeItem('obs_timeline_events');
+  localStorage.removeItem('obs_marquee_text');
   openEditModal();
 }
 
@@ -261,12 +320,14 @@ function escapeHtml(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-// Keyboard Hotkeys Support
+// Keyboard Hotkeys Support (H: hide/show panel, M: toggle timeline/marquee view, Left/Right: switch stage, Space: pause/play)
 window.addEventListener('keydown', (e) => {
   if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
 
   if (e.key === 'h' || e.key === 'H') {
     toggleWholeControlPanel();
+  } else if (e.key === 'm' || e.key === 'M') {
+    toggleDisplayView();
   } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
     nextStage();
   } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
@@ -282,6 +343,7 @@ window.addEventListener('resize', updateLayoutOrientation);
 window.onload = function() {
   updateLayoutOrientation();
   startTimerLoop();
+  setDisplayView(displayView);
 
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('hidebtn') === 'true' || urlParams.get('controls') === 'false') {

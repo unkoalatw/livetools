@@ -46,6 +46,18 @@ html, body {
   opacity: 0.85;
 }
 
+/* Integrated Marquee Animation */
+.animate-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: trackMarquee 16s linear infinite;
+}
+
+@keyframes trackMarquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
 /* Control Panel Glassmorphism */
 .glass-panel {
   background: rgba(15, 23, 42, 0.92);

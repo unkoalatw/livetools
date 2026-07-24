@@ -249,6 +249,17 @@ class App {
           <label>時間軸階段列表 (格式: 階段名稱,分鐘|階段名稱,分鐘)</label>
           <input type="text" id="cfgEvents" class="form-control" value="開播準備與雜談,15|主要遊戲實況,45|觀眾互動 QA,20|特別活動,15|晚安下播,10">
         </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label>📢 跑馬燈公告內容</label>
+          <input type="text" id="cfgMarqueeText" class="form-control" value="🔥 歡迎來到直播間！點擊追蹤開啟小鈴鐺 | 💬 聊天室請保持禮貌 | 🎁 訂閱解鎖限定貼圖！">
+        </div>
+        <div class="form-group">
+          <label>預設顯示內容</label>
+          <select id="cfgView" class="form-control">
+            <option value="timeline">⏳ 時間軸模式 (按 M 切換跑馬燈)</option>
+            <option value="marquee">📢 跑馬燈模式 (按 M 切換時間軸)</option>
+          </select>
+        </div>
         <div class="form-group">
           <label>倒數進行模式</label>
           <select id="cfgMode" class="form-control">
@@ -256,7 +267,7 @@ class App {
             <option value="manual">手動觸發 (控制台/快捷鍵切換)</option>
           </select>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="grid-column: span 2;">
           <label>OBS 控制台按鈕顯示</label>
           <select id="cfgHideBtn" class="form-control">
             <option value="false">顯示控制台按鈕</option>
@@ -284,20 +295,24 @@ class App {
 
     if (toolKey === 'timeline') {
       const cfgEvents = document.getElementById('cfgEvents');
+      const cfgMarqueeText = document.getElementById('cfgMarqueeText');
+      const cfgView = document.getElementById('cfgView');
       const cfgMode = document.getElementById('cfgMode');
       const cfgHideBtn = document.getElementById('cfgHideBtn');
 
       const eventsVal = cfgEvents ? cfgEvents.value : "開播準備與雜談,15|主要遊戲實況,45";
+      const marqueeVal = cfgMarqueeText ? cfgMarqueeText.value : "🔥 歡迎來到直播間！";
+      const viewVal = cfgView ? cfgView.value : "timeline";
       const modeVal = cfgMode ? cfgMode.value : "auto";
       const hideBtnVal = cfgHideBtn ? cfgHideBtn.value : "false";
 
-      tool.init({ events: eventsVal, mode: modeVal, hidebtn: hideBtnVal });
+      tool.init({ events: eventsVal, marquee: marqueeVal, view: viewVal, mode: modeVal, hidebtn: hideBtnVal });
       if (stageContent) {
         tool.renderHTML(stageContent, false);
       }
 
       const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-      finalUrl = `${basePath}timeline.html?events=${encodeURIComponent(eventsVal)}&mode=${modeVal}&hidebtn=${hideBtnVal}`;
+      finalUrl = `${basePath}timeline.html?events=${encodeURIComponent(eventsVal)}&marquee=${encodeURIComponent(marqueeVal)}&view=${viewVal}&mode=${modeVal}&hidebtn=${hideBtnVal}`;
     } else {
       const params = new URLSearchParams();
       params.set('overlay', toolKey);

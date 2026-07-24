@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OBS 時間軸來源 - Stream Timeline Overlay</title>
+  <title>OBS 時間軸與跑馬燈來源 - Stream Timeline & Marquee Overlay</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -20,11 +20,21 @@
   <!-- STREAM OVERLAY MAIN CONTAINER -->
   <main id="main-container" class="w-full h-full flex justify-center items-center p-3 relative z-10">
     
-    <!-- Timeline Track Wrapper -->
-    <div id="track-wrapper" class="w-full max-w-full h-auto track-gradient rounded-full p-2.5 shadow-2xl border-2 border-white/50 backdrop-blur-md transition-all duration-300">
+    <!-- Timeline & Marquee Track Wrapper -->
+    <div id="track-wrapper" class="w-full max-w-full h-auto track-gradient rounded-full p-2.5 shadow-2xl border-2 border-white/50 backdrop-blur-md transition-all duration-300 relative overflow-hidden flex items-center">
+      
+      <!-- 1. Timeline Stage Nodes Container -->
       <div id="timeline-nodes-container" class="flex items-center justify-between gap-3 w-full h-full">
         <!-- Dynamic Pills Rendered by JS -->
       </div>
+
+      <!-- 2. Marquee Ticker Container (Toggled via Control Panel / Key M) -->
+      <div id="marquee-container" class="hidden w-full h-full flex items-center overflow-hidden whitespace-nowrap px-4 font-black text-slate-900 text-sm">
+        <div id="marquee-text-content" class="animate-marquee font-extrabold text-slate-900">
+          <!-- Dynamic Marquee Text Rendered by JS -->
+        </div>
+      </div>
+
     </div>
 
   </main>
@@ -42,17 +52,30 @@
     <div id="panel-content" class="hidden absolute right-0 top-11 w-80 glass-panel rounded-2xl p-4 text-white shadow-2xl border border-slate-700 text-xs">
       <div class="flex items-center justify-between border-b border-slate-700 pb-2 mb-3">
         <div class="font-bold flex items-center gap-2 text-amber-400">
-          <i class="fa-solid fa-sliders"></i> 時間軸控制台
+          <i class="fa-solid fa-sliders"></i> 時間軸與跑馬燈控制台
         </div>
         <button onclick="hideWholeControlPanel()" title="隱藏整個控制台 (按 H 可再次呼出)" class="text-slate-400 hover:text-red-400 text-xs px-2 py-0.5 rounded bg-slate-800 border border-slate-700 transition">
           <i class="fa-solid fa-eye-slash"></i> 隱藏 (H)
         </button>
       </div>
 
+      <!-- Display View Mode Switcher -->
+      <div class="mb-3">
+        <label class="text-[11px] font-semibold text-slate-300 block mb-1">切換顯示內容 (快捷鍵 M)</label>
+        <div class="grid grid-cols-2 gap-1.5 bg-slate-900/60 p-1 rounded-lg border border-slate-800 text-center">
+          <button id="btn-view-timeline" onclick="setDisplayView('timeline')" class="py-1.5 text-[11px] rounded-md font-bold bg-indigo-600 text-white border border-indigo-400/50 shadow transition">
+            ⏳ 時間軸模式
+          </button>
+          <button id="btn-view-marquee" onclick="setDisplayView('marquee')" class="py-1.5 text-[11px] rounded-md font-bold text-slate-400 hover:text-white border border-transparent transition">
+            📢 跑馬燈模式
+          </button>
+        </div>
+      </div>
+
       <!-- Quick Stage Switcher -->
       <div class="space-y-3">
         <div>
-          <label class="text-[11px] font-semibold text-slate-300 block mb-1.5">切換時間軸階段</label>
+          <label class="text-[11px] font-semibold text-slate-300 block mb-1.5">切換時間軸階段 (← / →)</label>
           <div class="grid grid-cols-3 gap-1.5">
             <button onclick="prevStage()" class="bg-slate-800 hover:bg-slate-700 text-white py-1.5 px-2 rounded-lg font-bold text-xs border border-slate-600 transition">
               <i class="fa-solid fa-chevron-left"></i> 上一階段
@@ -75,26 +98,33 @@
           </div>
         </div>
 
-        <!-- Edit Events Button -->
+        <!-- Edit Events & Marquee Button -->
         <div class="pt-2 border-t border-slate-700">
           <button onclick="openEditModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-indigo-300 py-2 rounded-lg font-semibold text-xs border border-indigo-500/30 flex items-center justify-center gap-2">
-            <i class="fa-solid fa-pen-to-square"></i> 編輯階段項目與時間
+            <i class="fa-solid fa-pen-to-square"></i> 編輯內容、時間與跑馬燈
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Event Editor Modal -->
+  <!-- Event & Marquee Editor Modal -->
   <div id="edit-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass-panel w-full max-w-lg rounded-2xl p-5 text-white border border-slate-700 shadow-2xl max-h-[85vh] flex flex-col">
       <div class="flex items-center justify-between border-b border-slate-700 pb-2 mb-3">
         <h3 class="text-sm font-bold text-amber-400 flex items-center gap-2">
-          <i class="fa-solid fa-list-check"></i> 編輯直播時間軸階段
+          <i class="fa-solid fa-list-check"></i> 編輯時間軸階段與跑馬燈公告
         </h3>
         <button onclick="closeEditModal()" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
       </div>
 
+      <!-- Edit Marquee Section -->
+      <div class="mb-3 p-2.5 bg-slate-900/90 rounded-lg border border-slate-700">
+        <label class="text-[11px] font-semibold text-amber-300 block mb-1">📢 跑馬燈公告內容</label>
+        <input type="text" id="marquee-input-text" class="w-full bg-slate-800 border border-slate-600 rounded px-2.5 py-1.5 text-xs text-white" placeholder="輸入跑馬燈公告內容...">
+      </div>
+
+      <label class="text-[11px] font-semibold text-slate-300 block mb-1">⏳ 時間軸階段列表</label>
       <div id="modal-events-list" class="space-y-2 overflow-y-auto flex-1 pr-1 mb-3 text-xs">
         <!-- Rendered by JS -->
       </div>
