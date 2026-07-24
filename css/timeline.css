@@ -11,12 +11,6 @@ html, body {
   user-select: none;
 }
 
-/* Top Subtle Gradient Bar */
-.top-gradient-bar {
-  background: linear-gradient(90deg, #4c1d95 0%, #7c3aed 25%, #2563eb 50%, #06b6d4 100%);
-  box-shadow: 0 0 12px rgba(124, 58, 237, 0.6);
-}
-
 /* Bottom / Side Track Gradient (Matches Reference Image) */
 .track-gradient {
   background: linear-gradient(90deg, #a7f3d0 0%, #99f6e4 30%, #a5f3fc 65%, #93c5fd 100%);
