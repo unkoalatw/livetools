@@ -5,6 +5,7 @@ export class WheelTool {
     this.colors = ["#8b5cf6", "#06b6d4", "#ec4899", "#10b981", "#f59e0b", "#6366f1"];
     this.isSpinning = false;
     this.currentAngle = 0;
+    this.keydownHandlerAttached = false;
   }
 
   init(options = {}) {
@@ -15,23 +16,42 @@ export class WheelTool {
 
   renderHTML(containerEl, isObsMode = false) {
     containerEl.innerHTML = `
-      <div class="wheel-container">
+      <div class="wheel-container" style="display: flex; flex-direction: column; align-items: center; position: relative;">
         <div class="wheel-pointer"></div>
-        <canvas id="wheelCanvas" width="220" height="220"></canvas>
-        ${!isObsMode ? `
-          <button id="btnSpinWheel" class="btn btn-sm btn-primary" style="margin-top: 0.8rem;">🎡 開始旋轉抽獎</button>
-        ` : ''}
+        <canvas id="wheelCanvas" width="260" height="260" style="cursor: pointer; transition: transform 0.2s;" title="點擊轉盤即可旋轉"></canvas>
+        <button id="btnSpinWheel" class="btn btn-sm btn-primary" style="margin-top: 0.8rem; box-shadow: 0 0 15px rgba(139,92,246,0.6);">
+          🎡 開始旋轉抽獎 (點擊/按空白鍵)
+        </button>
       </div>
     `;
 
     const canvas = containerEl.querySelector('#wheelCanvas');
+    const spinBtn = containerEl.querySelector('#btnSpinWheel');
+
     if (canvas) {
       this.drawWheel(canvas);
+      
+      // Click canvas to spin
+      canvas.onclick = () => this.spin(canvas, containerEl);
     }
 
-    if (!isObsMode) {
-      const spinBtn = containerEl.querySelector('#btnSpinWheel');
-      spinBtn?.addEventListener('click', () => this.spin(canvas, containerEl));
+    if (spinBtn) {
+      spinBtn.onclick = () => this.spin(canvas, containerEl);
+    }
+
+    // Attach global keyboard listener (Space, Enter, S)
+    if (!this.keydownHandlerAttached) {
+      this.keydownHandlerAttached = true;
+      window.addEventListener('keydown', (e) => {
+        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+        if (e.key === ' ' || e.key === 'Enter' || e.key.toLowerCase() === 's') {
+          e.preventDefault();
+          const activeCanvas = document.querySelector('#wheelCanvas');
+          if (activeCanvas) {
+            this.spin(activeCanvas, containerEl);
+          }
+        }
+      });
     }
   }
 
@@ -41,7 +61,7 @@ export class WheelTool {
     const arcSize = (2 * Math.PI) / numOptions;
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const radius = canvas.width / 2 - 5;
+    const radius = canvas.width / 2 - 8;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -62,18 +82,35 @@ export class WheelTool {
       ctx.rotate(angle + arcSize / 2);
       ctx.textAlign = 'right';
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 12px Outfit, sans-serif';
+      ctx.font = 'bold 13px Outfit, sans-serif';
       ctx.fillText(this.options[i], radius - 15, 4);
       ctx.restore();
     }
+
+    // Draw center pin
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 18, 0, 2 * Math.PI);
+    ctx.fillStyle = '#090a0f';
+    ctx.fill();
+    ctx.strokeStyle = '#8b5cf6';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 6, 0, 2 * Math.PI);
+    ctx.fillStyle = '#06b6d4';
+    ctx.fill();
   }
 
   spin(canvas, containerEl) {
     if (this.isSpinning) return;
     this.isSpinning = true;
 
-    const extraDegree = Math.floor(Math.random() * 360) + 1440; // At least 4 full rotations
-    const duration = 4000;
+    // Play click sound using Web Audio API
+    this.playClickSound();
+
+    const extraDegree = Math.floor(Math.random() * 360) + 1800; // At least 5 full rotations
+    const duration = 4500;
     const start = performance.now();
     const initialAngle = this.currentAngle;
 
@@ -105,11 +142,49 @@ export class WheelTool {
     const winningIndex = Math.floor(normalizedAngle / arcSize);
     const winner = this.options[winningIndex] || this.options[0];
 
+    // Fanfare Sound
+    this.playWinnerSound();
+
+    // Winner Toast Banner
     const resultToast = document.createElement('div');
     resultToast.className = 'toast';
-    resultToast.innerHTML = `🎉 抽中結果：<span style="color: #06b6d4;">${winner}</span>`;
+    resultToast.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); font-size: 1.2rem; padding: 1rem 2rem; background: rgba(18, 20, 32, 0.95); border: 2px solid #8b5cf6; border-radius: 12px; box-shadow: 0 0 30px rgba(139,92,246,0.8); z-index: 9999; text-align: center;';
+    resultToast.innerHTML = `🎉 恭喜抽中：<strong style="color: #06b6d4;">${winner}</strong>`;
     document.body.appendChild(resultToast);
 
-    setTimeout(() => resultToast.remove(), 4000);
+    setTimeout(() => resultToast.remove(), 5000);
+  }
+
+  playClickSound() {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.1);
+    } catch(e) {}
+  }
+
+  playWinnerSound() {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const now = audioCtx.currentTime;
+      [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(freq, now + i * 0.08);
+        gain.gain.setValueAtTime(0.3, now + i * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now + i * 0.08);
+        osc.stop(now + 0.8);
+      });
+    } catch(e) {}
   }
 }
