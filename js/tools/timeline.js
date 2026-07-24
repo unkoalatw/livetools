@@ -22,7 +22,7 @@ export class TimelineTool {
     const iframeUrl = `timeline.html?events=${encodedEvents}&mode=${this.mode}&view=${this.view}&marquee=${encodedMarquee}&hidebtn=${this.hideBtn}`;
 
     containerEl.innerHTML = `
-      <div style="width: 100%; height: 180px; position: relative;">
+      <div style="width: 100%; height: 260px; position: relative; display: flex; justify-content: center; align-items: center;">
         <iframe src="${iframeUrl}" style="width: 100%; height: 100%; border: none; border-radius: 8px; background: transparent;"></iframe>
       </div>
     `;

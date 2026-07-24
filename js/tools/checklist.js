@@ -18,7 +18,7 @@ export class ChecklistTool {
     const iframeUrl = `checklist.html?title=${encodedTitle}&items=${encodedItems}&hidebtn=${this.hideBtn}`;
 
     containerEl.innerHTML = `
-      <div style="width: 100%; height: 220px; position: relative;">
+      <div style="width: 100%; height: 260px; position: relative; display: flex; justify-content: center; align-items: center;">
         <iframe src="${iframeUrl}" style="width: 100%; height: 100%; border: none; border-radius: 8px; background: transparent;"></iframe>
       </div>
     `;

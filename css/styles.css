@@ -527,12 +527,12 @@ body {
   background: repeating-conic-gradient(#1a1d2e 0% 25%, #111422 0% 50%) 50% / 20px 20px;
   border: 2px dashed var(--border-color);
   border-radius: var(--radius-md);
-  min-height: 220px;
+  min-height: 280px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 2rem;
+  padding: 1rem;
   margin-bottom: 1rem;
 }
 
