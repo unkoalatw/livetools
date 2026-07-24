@@ -10,6 +10,7 @@ import { ChecklistTool } from './tools/checklist.js';
 import { StreakTool } from './tools/streak.js';
 import { BrbTool } from './tools/brb.js';
 import { WebcamTool } from './tools/webcam.js';
+import { GameinfoTool } from './tools/gameinfo.js';
 
 class App {
   constructor() {
@@ -24,6 +25,7 @@ class App {
       streak: new StreakTool(),
       brb: new BrbTool(),
       webcam: new WebcamTool(),
+      gameinfo: new GameinfoTool(),
     };
 
     this.currentToolKey = null;
@@ -175,6 +177,7 @@ class App {
       streak: { title: '勝負戰績與連勝計數器設定', icon: SVG_ICONS.trophy },
       brb: { title: '暫離 / 休息中預告卡設定', icon: SVG_ICONS.coffee },
       webcam: { title: '視訊鏡頭霓虹相框設定', icon: SVG_ICONS.webcam },
+      gameinfo: { title: '遊戲資訊即時展示卡設定', icon: SVG_ICONS.gamepad },
     };
 
     const meta = toolMeta[toolKey] || { title: '工具設定', icon: SVG_ICONS.gear };
@@ -371,6 +374,40 @@ class App {
           </select>
         </div>
       `;
+    } else if (toolKey === 'gameinfo') {
+      container.innerHTML = `
+        <div class="form-group" style="grid-column: span 2;">
+          <label>遊戲名稱 (輸入或搜尋)</label>
+          <input type="text" id="cfgGameTitle" class="form-control" value="黑神話：悟空 (Black Myth: Wukong)">
+        </div>
+        <div class="form-group">
+          <label>開發團隊 / 發行商</label>
+          <input type="text" id="cfgGameDev" class="form-control" value="Game Science (遊戲科學)">
+        </div>
+        <div class="form-group">
+          <label>遊戲類型標籤</label>
+          <input type="text" id="cfgGameGenre" class="form-control" value="動作 RPG">
+        </div>
+        <div class="form-group">
+          <label>評分 (0 ~ 10)</label>
+          <input type="text" id="cfgGameRating" class="form-control" value="9.5">
+        </div>
+        <div class="form-group">
+          <label>價格 / 狀態</label>
+          <input type="text" id="cfgGamePrice" class="form-control" value="NT$ 1,280">
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label>封面圖片網址 (Cover Image URL)</label>
+          <input type="text" id="cfgGameCover" class="form-control" value="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80">
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label>OBS 控制台按鈕顯示</label>
+          <select id="cfgHideBtn" class="form-control">
+            <option value="false">顯示控制台按鈕</option>
+            <option value="true">預設隱藏 (按 H 可再呼出)</option>
+          </select>
+        </div>
+      `;
     }
 
     container.querySelectorAll('input, select').forEach(input => {
@@ -456,6 +493,26 @@ class App {
       tool.init({ tag: tagVal, aspect: aspectVal, color: colorVal, hidebtn: hideBtnVal });
       if (stageContent) tool.renderHTML(stageContent, false);
       finalUrl = `${basePath}webcam.html?aspect=${aspectVal}&title=${encodeURIComponent(tagVal)}&color=${encodeURIComponent(colorVal)}&hidebtn=${hideBtnVal}`;
+    } else if (toolKey === 'gameinfo') {
+      const cfgGameTitle = document.getElementById('cfgGameTitle');
+      const cfgGameDev = document.getElementById('cfgGameDev');
+      const cfgGameGenre = document.getElementById('cfgGameGenre');
+      const cfgGameRating = document.getElementById('cfgGameRating');
+      const cfgGamePrice = document.getElementById('cfgGamePrice');
+      const cfgGameCover = document.getElementById('cfgGameCover');
+      const cfgHideBtn = document.getElementById('cfgHideBtn');
+
+      const titleVal = cfgGameTitle ? cfgGameTitle.value : "黑神話：悟空 (Black Myth: Wukong)";
+      const devVal = cfgGameDev ? cfgGameDev.value : "Game Science (遊戲科學)";
+      const genreVal = cfgGameGenre ? cfgGameGenre.value : "動作 RPG";
+      const ratingVal = cfgGameRating ? cfgGameRating.value : "9.5";
+      const priceVal = cfgGamePrice ? cfgGamePrice.value : "NT$ 1,280";
+      const coverVal = cfgGameCover ? cfgGameCover.value : "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80";
+      const hideBtnVal = cfgHideBtn ? cfgHideBtn.value : "false";
+
+      tool.init({ title: titleVal, dev: devVal, genre: genreVal, rating: ratingVal, price: priceVal, cover: coverVal, hidebtn: hideBtnVal });
+      if (stageContent) tool.renderHTML(stageContent, false);
+      finalUrl = `${basePath}gameinfo.html?title=${encodeURIComponent(titleVal)}&dev=${encodeURIComponent(devVal)}&genre=${encodeURIComponent(genreVal)}&rating=${encodeURIComponent(ratingVal)}&price=${encodeURIComponent(priceVal)}&cover=${encodeURIComponent(coverVal)}&hidebtn=${hideBtnVal}`;
     } else {
       const params = new URLSearchParams();
       params.set('overlay', toolKey);

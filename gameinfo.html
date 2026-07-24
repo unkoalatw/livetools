@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBS 遊戲資訊展示卡 - Game Info Overlay</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter, Noto Sans TC, JetBrains Mono -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@800&family=Noto+Sans+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/gameinfo.css">
+</head>
+<body class="w-full h-full relative">
+
+  <!-- STREAM OVERLAY MAIN CONTAINER -->
+  <main id="main-container" class="w-full h-full flex justify-center items-center p-3 relative z-10">
+    
+    <!-- Game Info Glass Card -->
+    <div id="game-card-el" class="game-card">
+      
+      <!-- Cover Box -->
+      <div class="cover-box">
+        <img id="game-cover-img" src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80" alt="Game Cover">
+      </div>
+
+      <!-- Game Details -->
+      <div class="game-details">
+        <h1 id="game-title-el" class="game-title">黑神話：悟空 (Black Myth: Wukong)</h1>
+        <p id="game-dev-el" class="game-developer">Game Science (遊戲科學)</p>
+
+        <div class="game-tags">
+          <span id="game-genre-el" class="game-tag">動作 RPG</span>
+          <span class="game-tag bg-indigo-500/20 text-indigo-300 border-indigo-500/30">熱門實況</span>
+        </div>
+
+        <div class="game-meta-row">
+          <div class="rating-badge">
+            <i class="fa-solid fa-star text-amber-400"></i>
+            <span id="game-rating-el">9.5</span>
+            <span class="text-[9px] text-slate-400">/ 10</span>
+          </div>
+
+          <div id="game-price-el" class="price-badge">NT$ 1,280</div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- OBS CONTROL PANEL BUTTON & DRAWER -->
+  <div id="control-panel" class="fixed top-3 right-3 z-50 transition-all duration-300">
+    <button id="toggle-panel-btn" onclick="toggleControlPanel()" class="bg-slate-900/90 hover:bg-slate-800 text-white px-3 py-2 rounded-full shadow-2xl border border-slate-700 flex items-center justify-center gap-2 text-xs font-semibold transition hover:scale-105">
+      <i class="fa-solid fa-sliders text-amber-400"></i>
+      <span class="text-[11px]">OBS 控制台 (H)</span>
+    </button>
+
+    <div id="panel-content" class="hidden absolute right-0 top-11 w-80 glass-panel rounded-2xl p-4 text-white shadow-2xl border border-slate-700 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-700 pb-2 mb-3">
+        <div class="font-bold flex items-center gap-2 text-amber-400">
+          <i class="fa-solid fa-gamepad"></i> 遊戲資訊控制台
+        </div>
+        <button onclick="hideWholeControlPanel()" class="text-slate-400 hover:text-red-400 text-xs px-2 py-0.5 rounded bg-slate-800 border border-slate-700 transition">
+          <i class="fa-solid fa-eye-slash"></i> 隱藏 (H)
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="text-[11px] font-semibold text-slate-300 block mb-1">🔍 搜尋與自動抓取遊戲資訊</label>
+          <div class="flex gap-1.5 mb-2">
+            <input type="text" id="game-search-input" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1 text-xs text-white" placeholder="輸入遊戲名稱 (如: Elden Ring)...">
+            <button onclick="searchGameInfo(document.getElementById('game-search-input').value)" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded font-bold text-xs shrink-0 transition">
+              抓取
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-semibold text-slate-300 block mb-1">快捷開關</label>
+          <button id="btn-toggle-game" onclick="toggleGameCard()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-1.5 rounded-lg font-bold text-xs shadow transition">
+            <i class="fa-solid fa-eye-slash mr-1"></i> 淡出關閉卡片 (G)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/gameinfo.js"></script>
+</body>
+</html>
