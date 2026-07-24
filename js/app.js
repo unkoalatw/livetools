@@ -5,6 +5,7 @@ import { MarqueeTool } from './tools/marquee.js';
 import { WheelTool } from './tools/wheel.js';
 import { SoundboardTool } from './tools/soundboard.js';
 import { TimelineTool } from './tools/timeline.js';
+import { ChecklistTool } from './tools/checklist.js';
 
 class App {
   constructor() {
@@ -15,6 +16,7 @@ class App {
       wheel: new WheelTool(),
       soundboard: new SoundboardTool(),
       timeline: new TimelineTool(),
+      checklist: new ChecklistTool(),
     };
 
     this.currentToolKey = null;
@@ -161,6 +163,7 @@ class App {
       wheel: '🎡 抽獎決策轉盤設定',
       soundboard: '🔊 直播音效控制器',
       timeline: '⏳ 直播時間軸流程設定',
+      checklist: '📝 主播即時備忘錄設定',
     };
 
     if (modalTitle) modalTitle.textContent = titles[toolKey] || '工具設定';
@@ -275,6 +278,24 @@ class App {
           </select>
         </div>
       `;
+    } else if (toolKey === 'checklist') {
+      container.innerHTML = `
+        <div class="form-group" style="grid-column: span 2;">
+          <label>備忘錄標題</label>
+          <input type="text" id="cfgChecklistTitle" class="form-control" value="主播備忘錄 & 待辦事項">
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label>備忘事項列表 (格式: 事項名稱,0或1完成狀態)</label>
+          <input type="text" id="cfgChecklistItems" class="form-control" value="開播準備與招呼觀眾,1|乾爹工商講稿,0|主要遊戲實況,0|觀眾互動問答,0|下播預告,0">
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label>OBS 控制台按鈕顯示</label>
+          <select id="cfgHideBtn" class="form-control">
+            <option value="false">顯示控制台按鈕</option>
+            <option value="true">預設隱藏 (按 H 可再呼出)</option>
+          </select>
+        </div>
+      `;
     }
 
     container.querySelectorAll('input, select').forEach(input => {
@@ -313,6 +334,22 @@ class App {
 
       const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
       finalUrl = `${basePath}timeline.html?events=${encodeURIComponent(eventsVal)}&marquee=${encodeURIComponent(marqueeVal)}&view=${viewVal}&mode=${modeVal}&hidebtn=${hideBtnVal}`;
+    } else if (toolKey === 'checklist') {
+      const cfgChecklistTitle = document.getElementById('cfgChecklistTitle');
+      const cfgChecklistItems = document.getElementById('cfgChecklistItems');
+      const cfgHideBtn = document.getElementById('cfgHideBtn');
+
+      const titleVal = cfgChecklistTitle ? cfgChecklistTitle.value : "主播備忘錄 & 待辦事項";
+      const itemsVal = cfgChecklistItems ? cfgChecklistItems.value : "開播準備,1|工商講稿,0";
+      const hideBtnVal = cfgHideBtn ? cfgHideBtn.value : "false";
+
+      tool.init({ title: titleVal, items: itemsVal, hidebtn: hideBtnVal });
+      if (stageContent) {
+        tool.renderHTML(stageContent, false);
+      }
+
+      const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+      finalUrl = `${basePath}checklist.html?title=${encodeURIComponent(titleVal)}&items=${encodeURIComponent(itemsVal)}&hidebtn=${hideBtnVal}`;
     } else {
       const params = new URLSearchParams();
       params.set('overlay', toolKey);
