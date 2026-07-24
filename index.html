@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBStools | 直播主視覺工具箱 Suite</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;800&family=Noto+Sans+TC:wght@400;600;700;900&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- OBS Overlay Standalone Container (Active only in overlay mode) -->
+  <div id="obsOverlayStage" class="obs-overlay-container" style="display: none;"></div>
+
+  <!-- Main Website App (Active in normal browser view) -->
+  <div id="mainApp">
+    
+    <!-- Top Navigation -->
+    <nav class="navbar">
+      <a href="#" class="logo">
+        <div class="logo-icon">🎥</div>
+        <div class="logo-text">OBS<span>Tools</span></div>
+      </a>
+      
+      <div class="nav-actions">
+        <button id="btnGuide" class="btn btn-secondary btn-sm">
+          <span>📖 OBS 設定教學</span>
+        </button>
+        <div class="hero-badge" style="margin: 0;">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+          OBS Ready
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <header class="hero">
+      <div class="hero-badge">⚡ 專為 Twitch / YouTube / OBS Studio 設計</div>
+      <h1 class="hero-title">高顏值 <span class="gradient-text">直播視覺工具箱</span></h1>
+      <p class="hero-desc">
+        提供倒數計時、目標進度條、抽獎轉盤、跑馬燈與音效板。即時自訂樣式，一鍵複製網址直接貼入 OBS 瀏覽器來源！
+      </p>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+      
+      <!-- Toolbar Filter & Search -->
+      <div class="toolbar">
+        <div class="filter-tabs">
+          <button class="tab-btn active" data-category="all">✨ 全部工具</button>
+          <button class="tab-btn" data-category="overlay">🎨 畫面元件</button>
+          <button class="tab-btn" data-category="interactive">🎮 互動娛樂</button>
+          <button class="tab-btn" data-category="audio">🔊 音效聲光</button>
+        </div>
+
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" class="search-input" placeholder="搜尋直播工具 (如: 倒數, 抽獎)...">
+        </div>
+      </div>
+
+      <!-- Tools Grid -->
+      <div id="toolsGrid" class="tools-grid">
+        
+        <!-- Card 1: Timer -->
+        <div class="tool-card glass" data-category="overlay" data-keywords="計時器 倒數 開播 timer">
+          <div>
+            <div class="tool-header">
+              <div class="tool-icon">⏱️</div>
+              <div class="tool-info">
+                <h3>直播倒數計時器</h3>
+                <span class="tool-tag">畫面 Overlay</span>
+              </div>
+            </div>
+            <p class="tool-body">開播前倒數或休息計時，自訂分秒、文字與霓虹字體色系，倒數完畢會自動播放提示聲。</p>
+            
+            <div class="card-preview-box" id="previewTimerCard"></div>
+          </div>
+          
+          <div class="tool-footer">
+            <button class="btn btn-primary btn-open-modal" data-tool="timer">⚙️ 自訂與 OBS 網址</button>
+          </div>
+        </div>
+
+        <!-- Card 2: Goal -->
+        <div class="tool-card glass" data-category="overlay" data-keywords="目標 訂閱 追蹤 goal sub bar">
+          <div>
+            <div class="tool-header">
+              <div class="tool-icon" style="background: rgba(6, 182, 212, 0.15); color: #67e8f9;">🎯</div>
+              <div class="tool-info">
+                <h3>追蹤 / 訂閱目標條</h3>
+                <span class="tool-tag">畫面 Overlay</span>
+              </div>
+            </div>
+            <p class="tool-body">設置直播目標（如粉專追蹤數、綠界贊助、小鈴鐺），即時發光漸層填滿動畫。</p>
+            
+            <div class="card-preview-box" id="previewGoalCard"></div>
+          </div>
+          
+          <div class="tool-footer">
+            <button class="btn btn-primary btn-open-modal" data-tool="goal">⚙️ 自訂與 OBS 網址</button>
+          </div>
+        </div>
+
+        <!-- Card 3: Marquee -->
+        <div class="tool-card glass" data-category="overlay" data-keywords="跑馬燈 公告 規矩 社群 marquee">
+          <div>
+            <div class="tool-header">
+              <div class="tool-icon" style="background: rgba(236, 72, 153, 0.15); color: #f472b6;">📢</div>
+              <div class="tool-info">
+                <h3>動態跑馬燈公告欄</h3>
+                <span class="tool-tag">畫面 Overlay</span>
+              </div>
+            </div>
+            <p class="tool-body">滾動播放台規、社群帳號（Discord/IG）、贊助名單或最新活動資訊，流暢無縫循環。</p>
+            
+            <div class="card-preview-box" id="previewMarqueeCard"></div>
+          </div>
+          
+          <div class="tool-footer">
+            <button class="btn btn-primary btn-open-modal" data-tool="marquee">⚙️ 自訂與 OBS 網址</button>
+          </div>
+        </div>
+
+        <!-- Card 4: Wheel -->
+        <div class="tool-card glass" data-category="interactive" data-keywords="抽獎 轉盤 遊戲 決策 wheel raffle">
+          <div>
+            <div class="tool-header">
+              <div class="tool-icon" style="background: rgba(16, 185, 129, 0.15); color: #6ee7b7;">🎡</div>
+              <div class="tool-info">
+                <h3>直播抽獎 / 決策轉盤</h3>
+                <span class="tool-tag">互動娛樂</span>
+              </div>
+            </div>
+            <p class="tool-body">與觀眾互動必備！自訂轉盤選項（贈品、懲罰、選角），隨機轉動與真實減速動畫。</p>
+            
+            <div class="card-preview-box" id="previewWheelCard"></div>
+          </div>
+          
+          <div class="tool-footer">
+            <button class="btn btn-primary btn-open-modal" data-tool="wheel">⚙️ 自訂與 OBS 網址</button>
+          </div>
+        </div>
+
+        <!-- Card 5: Soundboard -->
+        <div class="tool-card glass" data-category="audio" data-keywords="音效 快捷 效果音 歡呼 soundboard">
+          <div>
+            <div class="tool-header">
+              <div class="tool-icon" style="background: rgba(245, 158, 11, 0.15); color: #fcd34d;">🔊</div>
+              <div class="tool-info">
+                <h3>快捷直播音效板</h3>
+                <span class="tool-tag">音效聲光</span>
+              </div>
+            </div>
+            <p class="tool-body">內建歡呼、金幣、鼓聲、失敗等合成 Web 音效，點擊即響，為直播氣氛加分！</p>
+            
+            <div class="card-preview-box" id="previewSoundboardCard"></div>
+          </div>
+          
+          <div class="tool-footer">
+            <button class="btn btn-primary btn-open-modal" data-tool="soundboard">⚙️ 開啟音效控制器</button>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Config Modal / Tool Customizer Drawer -->
+  <div id="toolModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span id="modalIcon">⚙️</span>
+          <span id="modalTitle">工具設定與 OBS 產生器</span>
+        </div>
+        <button id="btnCloseModal" class="close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        
+        <!-- Preview Canvas Stage -->
+        <div>
+          <div class="form-group" style="margin-bottom: 0.5rem;">
+            <label>🖥️ 實時畫面預覽 (OBS 透明背景視窗)</label>
+          </div>
+          <div class="preview-stage">
+            <span class="stage-badge">1920x1080 Canvas</span>
+            <div id="modalStageContent" style="width: 100%; display: flex; justify-content: center;"></div>
+          </div>
+        </div>
+
+        <!-- Form Options Grid -->
+        <div id="modalFormFields" class="config-grid">
+          <!-- Dynamic Form Fields filled by JS -->
+        </div>
+
+        <!-- OBS Copy Box -->
+        <div class="obs-url-box">
+          <label style="font-weight: 700; color: #a78bfa; font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem;">
+            <span>🔗 OBS 瀏覽器來源專屬網址 (Browser Source URL)</span>
+          </label>
+          <div class="obs-url-input-wrap">
+            <input type="text" id="obsUrlInput" readonly value="">
+            <button id="btnCopyObsUrl" class="btn btn-accent">📋 複製網址</button>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted);">
+            💡 提示：在 OBS Studio 新增來源 ➔ 選擇「瀏覽器 (Browser)」➔ 貼上此網址即可將元件放入直播畫面！
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- OBS Tutorial Modal -->
+  <div id="guideModal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-header">
+        <div class="modal-title">📖 如何在 OBS 中使用工具箱元件</div>
+        <button id="btnCloseGuide" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body" style="gap: 1.2rem; font-size: 0.95rem; line-height: 1.6;">
+        <div style="background: rgba(139, 92, 246, 0.1); border-left: 4px solid var(--primary); padding: 1rem; border-radius: 4px;">
+          <strong>第一步：複製專屬網址</strong><br>
+          在任何工具點擊「⚙️ 自訂與 OBS 網址」，調整好您喜歡的顏色與文字後，點擊「📋 複製網址」。
+        </div>
+
+        <div style="background: rgba(6, 182, 212, 0.1); border-left: 4px solid var(--secondary); padding: 1rem; border-radius: 4px;">
+          <strong>第二步：在 OBS Studio 新增來源</strong><br>
+          開啟 OBS Studio ➔ 在「來源」分頁點擊「+」➔ 選擇 <strong>「瀏覽器 (Browser)」</strong> ➔ 設定名稱後點擊確定。
+        </div>
+
+        <div style="background: rgba(236, 72, 153, 0.1); border-left: 4px solid var(--accent); padding: 1rem; border-radius: 4px;">
+          <strong>第三步：貼上網址並調整尺寸</strong><br>
+          將複製的網址貼入「URL」欄位，尺寸可設為寬 <strong>1920</strong> / 高 <strong>1080</strong>（或依需求調整），勾選「當來源可見時重新整理瀏覽器」，點擊確定即完成！
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- JavaScript App Modules -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
