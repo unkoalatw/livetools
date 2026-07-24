@@ -7,11 +7,48 @@ const DEFAULT_EVENTS = [
   { id: 5, title: '晚安下播晚安', time: '20:35', durationMinutes: 10, icon: 'fa-moon' }
 ];
 
+// Helper to parse URL query parameters for OBS Browser Source customization
+function loadEventsFromSource() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const eventsParam = urlParams.get('events');
+  const modeParam = urlParams.get('mode');
+
+  if (modeParam) {
+    timerMode = modeParam;
+  }
+
+  if (eventsParam) {
+    try {
+      const defaultIcons = ['fa-comments', 'fa-gamepad', 'fa-users', 'fa-gift', 'fa-coffee', 'fa-trophy', 'fa-star'];
+      const parsed = eventsParam.split('|').map((itemStr, i) => {
+        const parts = itemStr.split(',');
+        const title = decodeURIComponent(parts[0] || '').trim();
+        const durationMinutes = parseInt(parts[1] || '15', 10);
+        return {
+          id: i + 1,
+          title: title || `階段 ${i + 1}`,
+          time: '',
+          durationMinutes: isNaN(durationMinutes) ? 15 : durationMinutes,
+          icon: defaultIcons[i % defaultIcons.length]
+        };
+      }).filter(evt => evt.title);
+
+      if (parsed.length > 0) {
+        return parsed;
+      }
+    } catch(e) {
+      console.error('Error parsing events from URL:', e);
+    }
+  }
+
+  return JSON.parse(localStorage.getItem('obs_timeline_events')) || DEFAULT_EVENTS;
+}
+
 // State Variables
-let events = JSON.parse(localStorage.getItem('obs_timeline_events')) || DEFAULT_EVENTS;
+let timerMode = 'auto'; // 'auto' or 'manual'
+let events = loadEventsFromSource();
 let activeIndex = 0;
 let isTimerRunning = true;
-let timerMode = 'auto'; // 'auto' or 'manual'
 let secondsLeftInStage = events[0] ? events[0].durationMinutes * 60 : 900;
 let timerInterval = null;
 
@@ -26,12 +63,10 @@ function updateLayoutOrientation() {
   const isVertical = window.innerHeight > window.innerWidth;
 
   if (isVertical) {
-    // Vertical side bar orientation (e.g. 200 width x 2000 height)
     mainContainer.className = "w-full h-full flex flex-col justify-center items-center p-3 relative z-10";
     trackWrapper.className = "w-full h-full vertical-track-gradient rounded-3xl p-3 shadow-2xl border-2 border-white/50 backdrop-blur-md flex flex-col justify-center";
     timelineContainer.className = "flex flex-col items-center justify-between gap-3 w-full h-full";
   } else {
-    // Horizontal bottom bar orientation (e.g. 2000 width x 200 height)
     mainContainer.className = "w-full h-full flex justify-center items-center p-3 relative z-10";
     trackWrapper.className = "w-full max-w-full h-auto track-gradient rounded-full p-2.5 shadow-2xl border-2 border-white/50 backdrop-blur-md";
     timelineContainer.className = "flex items-center justify-between gap-3 w-full h-full";
@@ -42,6 +77,7 @@ function updateLayoutOrientation() {
 
 // Render Pill Nodes
 function renderTimelineNodes() {
+  if (!timelineContainer) return;
   timelineContainer.innerHTML = '';
   const isVertical = window.innerHeight > window.innerWidth;
 
@@ -110,32 +146,40 @@ function jumpToStage(index) {
 
 function toggleTimer() {
   isTimerRunning = !isTimerRunning;
-  playPauseBtn.innerHTML = isTimerRunning 
-    ? '<i class="fa-solid fa-pause"></i> 暫停' 
-    : '<i class="fa-solid fa-play"></i> 繼續';
-  playPauseBtn.classList.toggle('bg-amber-500', isTimerRunning);
-  playPauseBtn.classList.toggle('bg-emerald-500', !isTimerRunning);
+  if (playPauseBtn) {
+    playPauseBtn.innerHTML = isTimerRunning 
+      ? '<i class="fa-solid fa-pause"></i> 暫停' 
+      : '<i class="fa-solid fa-play"></i> 繼續';
+    playPauseBtn.classList.toggle('bg-amber-500', isTimerRunning);
+    playPauseBtn.classList.toggle('bg-emerald-500', !isTimerRunning);
+  }
 }
 
 function setTimerMode(mode) {
   timerMode = mode;
-  document.getElementById('mode-auto').className = mode === 'auto' 
-    ? 'flex-1 py-1 text-[11px] rounded font-semibold bg-indigo-600 text-white' 
-    : 'flex-1 py-1 text-[11px] rounded font-semibold text-slate-400 hover:text-white';
-  
-  document.getElementById('mode-manual').className = mode === 'manual' 
-    ? 'flex-1 py-1 text-[11px] rounded font-semibold bg-indigo-600 text-white' 
-    : 'flex-1 py-1 text-[11px] rounded font-semibold text-slate-400 hover:text-white';
+  const autoBtn = document.getElementById('mode-auto');
+  const manualBtn = document.getElementById('mode-manual');
+  if (autoBtn) {
+    autoBtn.className = mode === 'auto' 
+      ? 'flex-1 py-1 text-[11px] rounded font-semibold bg-indigo-600 text-white' 
+      : 'flex-1 py-1 text-[11px] rounded font-semibold text-slate-400 hover:text-white';
+  }
+  if (manualBtn) {
+    manualBtn.className = mode === 'manual' 
+      ? 'flex-1 py-1 text-[11px] rounded font-semibold bg-indigo-600 text-white' 
+      : 'flex-1 py-1 text-[11px] rounded font-semibold text-slate-400 hover:text-white';
+  }
 }
 
 function toggleControlPanel() {
   const content = document.getElementById('panel-content');
-  content.classList.toggle('hidden');
+  content?.classList.toggle('hidden');
 }
 
 // Modal Events Editor
 function openEditModal() {
   const container = document.getElementById('modal-events-list');
+  if (!container) return;
   container.innerHTML = '';
 
   events.forEach((evt) => {
@@ -143,22 +187,23 @@ function openEditModal() {
     row.className = 'flex items-center gap-1.5 bg-slate-900/80 p-1.5 rounded-lg border border-slate-700';
     row.innerHTML = `
       <input type="text" value="${escapeHtml(evt.title)}" placeholder="階段名稱" class="evt-title flex-1 bg-slate-800 border border-slate-600 rounded px-2 py-1 text-xs text-white">
-      <input type="text" value="${escapeHtml(evt.time)}" placeholder="19:00" class="evt-time w-16 bg-slate-800 border border-slate-600 rounded px-2 py-1 text-xs text-white">
+      <input type="text" value="${escapeHtml(evt.time || '19:00')}" placeholder="19:00" class="evt-time w-16 bg-slate-800 border border-slate-600 rounded px-2 py-1 text-xs text-white">
       <input type="number" value="${evt.durationMinutes}" placeholder="分鐘" class="evt-dur w-14 bg-slate-800 border border-slate-600 rounded px-2 py-1 text-xs text-white">
       <button onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-300 px-1 text-xs"><i class="fa-solid fa-trash"></i></button>
     `;
     container.appendChild(row);
   });
 
-  document.getElementById('edit-modal').classList.remove('hidden');
+  document.getElementById('edit-modal')?.classList.remove('hidden');
 }
 
 function closeEditModal() {
-  document.getElementById('edit-modal').classList.add('hidden');
+  document.getElementById('edit-modal')?.classList.add('hidden');
 }
 
 function addNewEventRow() {
   const container = document.getElementById('modal-events-list');
+  if (!container) return;
   const row = document.createElement('div');
   row.className = 'flex items-center gap-1.5 bg-slate-900/80 p-1.5 rounded-lg border border-slate-700';
   row.innerHTML = `

@@ -4,6 +4,7 @@ import { GoalTool } from './tools/goal.js';
 import { MarqueeTool } from './tools/marquee.js';
 import { WheelTool } from './tools/wheel.js';
 import { SoundboardTool } from './tools/soundboard.js';
+import { TimelineTool } from './tools/timeline.js';
 
 class App {
   constructor() {
@@ -13,6 +14,7 @@ class App {
       marquee: new MarqueeTool(),
       wheel: new WheelTool(),
       soundboard: new SoundboardTool(),
+      timeline: new TimelineTool(),
     };
 
     this.currentToolKey = null;
@@ -23,13 +25,11 @@ class App {
     const urlParams = new URLSearchParams(window.location.search);
     const overlay = urlParams.get('overlay');
 
-    // If 'overlay' parameter exists, run in OBS standalone transparent mode!
     if (overlay && this.tools[overlay]) {
       this.runObsMode(overlay, urlParams);
       return;
     }
 
-    // Normal website interactive mode
     this.renderCardPreviews();
     this.setupEventListeners();
   }
@@ -43,7 +43,6 @@ class App {
 
     const tool = this.tools[overlayKey];
     
-    // Convert urlParams to options object
     const options = {};
     for (const [key, value] of urlParams.entries()) {
       options[key] = value;
@@ -54,7 +53,6 @@ class App {
   }
 
   renderCardPreviews() {
-    // Render static live previews inside card preview boxes
     const timerCard = document.getElementById('previewTimerCard');
     if (timerCard) this.tools.timer.renderHTML(timerCard, false);
 
@@ -72,7 +70,6 @@ class App {
   }
 
   setupEventListeners() {
-    // Open modal event
     document.querySelectorAll('.btn-open-modal').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const toolKey = e.currentTarget.getAttribute('data-tool');
@@ -80,7 +77,6 @@ class App {
       });
     });
 
-    // Close modal
     const closeBtn = document.getElementById('btnCloseModal');
     const modalOverlay = document.getElementById('toolModal');
     
@@ -89,7 +85,6 @@ class App {
       if (e.target === modalOverlay) this.closeModal();
     });
 
-    // Tutorial Guide modal
     const guideBtn = document.getElementById('btnGuide');
     const guideModal = document.getElementById('guideModal');
     const closeGuideBtn = document.getElementById('btnCloseGuide');
@@ -100,7 +95,6 @@ class App {
       if (e.target === guideModal) guideModal.classList.remove('active');
     });
 
-    // Copy OBS URL button
     const copyBtn = document.getElementById('btnCopyObsUrl');
     copyBtn?.addEventListener('click', () => {
       const urlInput = document.getElementById('obsUrlInput');
@@ -115,7 +109,6 @@ class App {
       }
     });
 
-    // Category Filter tabs
     const filterBtns = document.querySelectorAll('.filter-tabs .tab-btn');
     filterBtns.forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -127,7 +120,6 @@ class App {
       });
     });
 
-    // Search Input
     const searchInput = document.getElementById('searchInput');
     searchInput?.addEventListener('input', (e) => {
       const activeTab = document.querySelector('.filter-tabs .tab-btn.active');
@@ -160,7 +152,6 @@ class App {
     this.currentToolKey = toolKey;
     const modal = document.getElementById('toolModal');
     const modalTitle = document.getElementById('modalTitle');
-    const modalIcon = document.getElementById('modalIcon');
     const formFields = document.getElementById('modalFormFields');
 
     const titles = {
@@ -169,14 +160,12 @@ class App {
       marquee: '📢 跑馬燈公告欄設定',
       wheel: '🎡 抽獎決策轉盤設定',
       soundboard: '🔊 直播音效控制器',
+      timeline: '⏳ 直播時間軸流程設定',
     };
 
     if (modalTitle) modalTitle.textContent = titles[toolKey] || '工具設定';
     
-    // Build Dynamic Form Fields based on tool
     this.renderFormFields(toolKey, formFields);
-
-    // Update Live Preview and OBS URL
     this.updateModalState();
 
     modal.classList.add('active');
@@ -254,11 +243,25 @@ class App {
           </p>
         </div>
       `;
+    } else if (toolKey === 'timeline') {
+      container.innerHTML = `
+        <div class="form-group" style="grid-column: span 2;">
+          <label>時間軸階段列表 (格式: 階段名稱,分鐘|階段名稱,分鐘)</label>
+          <input type="text" id="cfgEvents" class="form-control" value="開播準備與雜談,15|主要遊戲實況,45|觀眾互動 QA,20|特別活動,15|晚安下播,10">
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label>倒數進行模式</label>
+          <select id="cfgMode" class="form-control">
+            <option value="auto">自動進行 (依分鐘數自動切換下一階段)</option>
+            <option value="manual">手動觸發 (使用控制台/快捷鍵切換)</option>
+          </select>
+        </div>
+      `;
     }
 
-    // Attach real-time input change listeners
-    container.querySelectorAll('input').forEach(input => {
+    container.querySelectorAll('input, select').forEach(input => {
       input.addEventListener('input', () => this.updateModalState());
+      input.addEventListener('change', () => this.updateModalState());
     });
   }
 
@@ -270,39 +273,55 @@ class App {
     const stageContent = document.getElementById('modalStageContent');
     const obsUrlInput = document.getElementById('obsUrlInput');
 
-    const params = new URLSearchParams();
-    params.set('overlay', toolKey);
+    let finalUrl = "";
 
-    const options = {};
+    if (toolKey === 'timeline') {
+      const cfgEvents = document.getElementById('cfgEvents');
+      const cfgMode = document.getElementById('cfgMode');
 
-    // Gather input values
-    const cfgTitle = document.getElementById('cfgTitle');
-    const cfgMinutes = document.getElementById('cfgMinutes');
-    const cfgCurrent = document.getElementById('cfgCurrent');
-    const cfgTarget = document.getElementById('cfgTarget');
-    const cfgText = document.getElementById('cfgText');
-    const cfgSpeed = document.getElementById('cfgSpeed');
-    const cfgItems = document.getElementById('cfgItems');
-    const cfgColor = document.getElementById('cfgColor');
+      const eventsVal = cfgEvents ? cfgEvents.value : "開播準備與雜談,15|主要遊戲實況,45";
+      const modeVal = cfgMode ? cfgMode.value : "auto";
 
-    if (cfgTitle) { options.title = cfgTitle.value; params.set('title', cfgTitle.value); }
-    if (cfgMinutes) { options.minutes = cfgMinutes.value; params.set('minutes', cfgMinutes.value); }
-    if (cfgCurrent) { options.current = cfgCurrent.value; params.set('current', cfgCurrent.value); }
-    if (cfgTarget) { options.target = cfgTarget.value; params.set('target', cfgTarget.value); }
-    if (cfgText) { options.text = cfgText.value; params.set('text', cfgText.value); }
-    if (cfgSpeed) { options.speed = cfgSpeed.value; params.set('speed', cfgSpeed.value); }
-    if (cfgItems) { options.items = cfgItems.value; params.set('items', cfgItems.value); }
-    if (cfgColor) { options.color = cfgColor.value; params.set('color', cfgColor.value); }
+      tool.init({ events: eventsVal, mode: modeVal });
+      if (stageContent) {
+        tool.renderHTML(stageContent, false);
+      }
 
-    // Re-init tool and render to preview stage
-    tool.init(options);
-    if (stageContent) {
-      tool.renderHTML(stageContent, false);
+      const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+      finalUrl = `${basePath}timeline.html?events=${encodeURIComponent(eventsVal)}&mode=${modeVal}`;
+    } else {
+      const params = new URLSearchParams();
+      params.set('overlay', toolKey);
+
+      const options = {};
+
+      const cfgTitle = document.getElementById('cfgTitle');
+      const cfgMinutes = document.getElementById('cfgMinutes');
+      const cfgCurrent = document.getElementById('cfgCurrent');
+      const cfgTarget = document.getElementById('cfgTarget');
+      const cfgText = document.getElementById('cfgText');
+      const cfgSpeed = document.getElementById('cfgSpeed');
+      const cfgItems = document.getElementById('cfgItems');
+      const cfgColor = document.getElementById('cfgColor');
+
+      if (cfgTitle) { options.title = cfgTitle.value; params.set('title', cfgTitle.value); }
+      if (cfgMinutes) { options.minutes = cfgMinutes.value; params.set('minutes', cfgMinutes.value); }
+      if (cfgCurrent) { options.current = cfgCurrent.value; params.set('current', cfgCurrent.value); }
+      if (cfgTarget) { options.target = cfgTarget.value; params.set('target', cfgTarget.value); }
+      if (cfgText) { options.text = cfgText.value; params.set('text', cfgText.value); }
+      if (cfgSpeed) { options.speed = cfgSpeed.value; params.set('speed', cfgSpeed.value); }
+      if (cfgItems) { options.items = cfgItems.value; params.set('items', cfgItems.value); }
+      if (cfgColor) { options.color = cfgColor.value; params.set('color', cfgColor.value); }
+
+      tool.init(options);
+      if (stageContent) {
+        tool.renderHTML(stageContent, false);
+      }
+
+      const currentBaseUrl = window.location.origin + window.location.pathname;
+      finalUrl = `${currentBaseUrl}?${params.toString()}`;
     }
 
-    // Construct clean URL
-    const currentBaseUrl = window.location.origin + window.location.pathname;
-    const finalUrl = `${currentBaseUrl}?${params.toString()}`;
     if (obsUrlInput) {
       obsUrlInput.value = finalUrl;
     }
@@ -321,7 +340,6 @@ class App {
   }
 }
 
-// Start App when DOM ready
 document.addEventListener('DOMContentLoaded', () => {
   new App();
 });
