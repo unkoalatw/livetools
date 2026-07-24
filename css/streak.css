@@ -1,0 +1,77 @@
+/* OBS Browser Source Transparency Fix */
+html, body {
+  background-color: transparent !important;
+  background: transparent !important;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Inter', 'Noto Sans TC', sans-serif;
+  user-select: none;
+}
+
+/* Streak Glass Card */
+.streak-card {
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(139, 92, 246, 0.3);
+  border-radius: 20px;
+  color: #f8fafc;
+  padding: 0.8rem 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.streak-card.on-fire {
+  border-color: #f59e0b;
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.6), 0 0 15px rgba(239, 68, 68, 0.4);
+  animation: firePulse 1.5s infinite alternate;
+}
+
+@keyframes firePulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.03); }
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 1.4rem;
+  font-weight: 900;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Control Panel Glassmorphism */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

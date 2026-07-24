@@ -6,6 +6,9 @@ import { WheelTool } from './tools/wheel.js';
 import { SoundboardTool } from './tools/soundboard.js';
 import { TimelineTool } from './tools/timeline.js';
 import { ChecklistTool } from './tools/checklist.js';
+import { StreakTool } from './tools/streak.js';
+import { BrbTool } from './tools/brb.js';
+import { WebcamTool } from './tools/webcam.js';
 
 class App {
   constructor() {
@@ -17,6 +20,9 @@ class App {
       soundboard: new SoundboardTool(),
       timeline: new TimelineTool(),
       checklist: new ChecklistTool(),
+      streak: new StreakTool(),
+      brb: new BrbTool(),
+      webcam: new WebcamTool(),
     };
 
     this.currentToolKey = null;
@@ -164,6 +170,9 @@ class App {
       soundboard: '🔊 直播音效控制器',
       timeline: '⏳ 直播時間軸流程設定',
       checklist: '📝 主播即時備忘錄設定',
+      streak: '🏆 勝負戰績與連勝計數器設定',
+      brb: '☕ 暫離 / 休息中預告卡設定',
+      webcam: '📸 視訊鏡頭霓虹相框設定',
     };
 
     if (modalTitle) modalTitle.textContent = titles[toolKey] || '工具設定';
@@ -296,6 +305,68 @@ class App {
           </select>
         </div>
       `;
+    } else if (toolKey === 'streak') {
+      container.innerHTML = `
+        <div class="form-group" style="grid-column: span 2;">
+          <label>戰績標題</label>
+          <input type="text" id="cfgStreakTitle" class="form-control" value="今日遊戲戰績">
+        </div>
+        <div class="form-group">
+          <label>初始勝場</label>
+          <input type="number" id="cfgWins" class="form-control" value="0">
+        </div>
+        <div class="form-group">
+          <label>初始敗場</label>
+          <input type="number" id="cfgLosses" class="form-control" value="0">
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label>OBS 控制台按鈕顯示</label>
+          <select id="cfgHideBtn" class="form-control">
+            <option value="false">顯示控制台按鈕</option>
+            <option value="true">預設隱藏 (按 H 可再呼出)</option>
+          </select>
+        </div>
+      `;
+    } else if (toolKey === 'brb') {
+      container.innerHTML = `
+        <div class="form-group" style="grid-column: span 2;">
+          <label>暫離預告標題文字</label>
+          <input type="text" id="cfgBrbTitle" class="form-control" value="主播去拿水/上廁所，馬上回來！">
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label>OBS 控制台按鈕顯示</label>
+          <select id="cfgHideBtn" class="form-control">
+            <option value="false">顯示控制台按鈕</option>
+            <option value="true">預設隱藏 (按 H 可再呼出)</option>
+          </select>
+        </div>
+      `;
+    } else if (toolKey === 'webcam') {
+      container.innerHTML = `
+        <div class="form-group">
+          <label>標籤銘牌文字</label>
+          <input type="text" id="cfgWebcamTag" class="form-control" value="🔴 LIVE">
+        </div>
+        <div class="form-group">
+          <label>相框型態與比例</label>
+          <select id="cfgWebcamAspect" class="form-control">
+            <option value="16-9">16 : 9 寬螢幕框</option>
+            <option value="4-3">4 : 3 方框</option>
+            <option value="circle">圓形外框</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>霓虹邊框顏色</label>
+          <input type="color" id="cfgWebcamColor" class="form-control" value="#06b6d4" style="height: 40px; padding: 2px;">
+        </div>
+        <div class="form-group">
+          <label>OBS 控制台按鈕顯示</label>
+          <select id="cfgHideBtn" class="form-control">
+            <option value="false">顯示控制台按鈕</option>
+            <option value="true">預設隱藏 (按 H 可再呼出)</option>
+          </select>
+        </div>
+      `;
     }
 
     container.querySelectorAll('input, select').forEach(input => {
@@ -313,6 +384,7 @@ class App {
     const obsUrlInput = document.getElementById('obsUrlInput');
 
     let finalUrl = "";
+    const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
 
     if (toolKey === 'timeline') {
       const cfgEvents = document.getElementById('cfgEvents');
@@ -328,11 +400,7 @@ class App {
       const hideBtnVal = cfgHideBtn ? cfgHideBtn.value : "false";
 
       tool.init({ events: eventsVal, marquee: marqueeVal, view: viewVal, mode: modeVal, hidebtn: hideBtnVal });
-      if (stageContent) {
-        tool.renderHTML(stageContent, false);
-      }
-
-      const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+      if (stageContent) tool.renderHTML(stageContent, false);
       finalUrl = `${basePath}timeline.html?events=${encodeURIComponent(eventsVal)}&marquee=${encodeURIComponent(marqueeVal)}&view=${viewVal}&mode=${modeVal}&hidebtn=${hideBtnVal}`;
     } else if (toolKey === 'checklist') {
       const cfgChecklistTitle = document.getElementById('cfgChecklistTitle');
@@ -344,12 +412,46 @@ class App {
       const hideBtnVal = cfgHideBtn ? cfgHideBtn.value : "false";
 
       tool.init({ title: titleVal, items: itemsVal, hidebtn: hideBtnVal });
-      if (stageContent) {
-        tool.renderHTML(stageContent, false);
-      }
-
-      const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+      if (stageContent) tool.renderHTML(stageContent, false);
       finalUrl = `${basePath}checklist.html?title=${encodeURIComponent(titleVal)}&items=${encodeURIComponent(itemsVal)}&hidebtn=${hideBtnVal}`;
+    } else if (toolKey === 'streak') {
+      const cfgStreakTitle = document.getElementById('cfgStreakTitle');
+      const cfgWins = document.getElementById('cfgWins');
+      const cfgLosses = document.getElementById('cfgLosses');
+      const cfgHideBtn = document.getElementById('cfgHideBtn');
+
+      const titleVal = cfgStreakTitle ? cfgStreakTitle.value : "今日遊戲戰績";
+      const winsVal = cfgWins ? cfgWins.value : "0";
+      const lossesVal = cfgLosses ? cfgLosses.value : "0";
+      const hideBtnVal = cfgHideBtn ? cfgHideBtn.value : "false";
+
+      tool.init({ title: titleVal, wins: winsVal, losses: lossesVal, hidebtn: hideBtnVal });
+      if (stageContent) tool.renderHTML(stageContent, false);
+      finalUrl = `${basePath}streak.html?title=${encodeURIComponent(titleVal)}&wins=${winsVal}&losses=${lossesVal}&hidebtn=${hideBtnVal}`;
+    } else if (toolKey === 'brb') {
+      const cfgBrbTitle = document.getElementById('cfgBrbTitle');
+      const cfgHideBtn = document.getElementById('cfgHideBtn');
+
+      const titleVal = cfgBrbTitle ? cfgBrbTitle.value : "主播馬上回來！";
+      const hideBtnVal = cfgHideBtn ? cfgHideBtn.value : "false";
+
+      tool.init({ title: titleVal, hidebtn: hideBtnVal });
+      if (stageContent) tool.renderHTML(stageContent, false);
+      finalUrl = `${basePath}brb.html?title=${encodeURIComponent(titleVal)}&hidebtn=${hideBtnVal}`;
+    } else if (toolKey === 'webcam') {
+      const cfgWebcamTag = document.getElementById('cfgWebcamTag');
+      const cfgWebcamAspect = document.getElementById('cfgWebcamAspect');
+      const cfgWebcamColor = document.getElementById('cfgWebcamColor');
+      const cfgHideBtn = document.getElementById('cfgHideBtn');
+
+      const tagVal = cfgWebcamTag ? cfgWebcamTag.value : "🔴 LIVE";
+      const aspectVal = cfgWebcamAspect ? cfgWebcamAspect.value : "16-9";
+      const colorVal = cfgWebcamColor ? cfgWebcamColor.value : "#06b6d4";
+      const hideBtnVal = cfgHideBtn ? cfgHideBtn.value : "false";
+
+      tool.init({ tag: tagVal, aspect: aspectVal, color: colorVal, hidebtn: hideBtnVal });
+      if (stageContent) tool.renderHTML(stageContent, false);
+      finalUrl = `${basePath}webcam.html?aspect=${aspectVal}&title=${encodeURIComponent(tagVal)}&color=${encodeURIComponent(colorVal)}&hidebtn=${hideBtnVal}`;
     } else {
       const params = new URLSearchParams();
       params.set('overlay', toolKey);
@@ -375,9 +477,7 @@ class App {
       if (cfgColor) { options.color = cfgColor.value; params.set('color', cfgColor.value); }
 
       tool.init(options);
-      if (stageContent) {
-        tool.renderHTML(stageContent, false);
-      }
+      if (stageContent) tool.renderHTML(stageContent, false);
 
       const currentBaseUrl = window.location.origin + window.location.pathname;
       finalUrl = `${currentBaseUrl}?${params.toString()}`;

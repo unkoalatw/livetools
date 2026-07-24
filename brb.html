@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBS 暫離/休息中預告卡 - Be Right Back Overlay</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter, Noto Sans TC, JetBrains Mono -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@800&family=Noto+Sans+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/brb.css">
+</head>
+<body class="w-full h-full relative">
+
+  <!-- STREAM OVERLAY MAIN CONTAINER -->
+  <main id="main-container" class="w-full h-full flex justify-center items-center p-3 relative z-10">
+    
+    <!-- BRB Glass Card -->
+    <div id="brb-card-el" class="brb-card">
+      <div class="coffee-icon">☕</div>
+      <div class="text-center">
+        <h1 id="brb-title-el" class="text-lg font-black text-white mb-1">主播去拿水/上廁所，馬上回來！</h1>
+        <p class="text-xs text-slate-400">BE RIGHT BACK • STREAM PAUSED</p>
+      </div>
+
+      <div class="bg-slate-900/60 border border-slate-800 px-6 py-2 rounded-2xl flex flex-col items-center">
+        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">已離席時間</span>
+        <span id="brb-timer-el" class="brb-timer">00:00</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- OBS CONTROL PANEL BUTTON & DRAWER -->
+  <div id="control-panel" class="fixed top-3 right-3 z-50 transition-all duration-300">
+    <button id="toggle-panel-btn" onclick="toggleControlPanel()" class="bg-slate-900/90 hover:bg-slate-800 text-white px-3 py-2 rounded-full shadow-2xl border border-slate-700 flex items-center justify-center gap-2 text-xs font-semibold transition hover:scale-105">
+      <i class="fa-solid fa-sliders text-amber-400"></i>
+      <span class="text-[11px]">OBS 控制台 (H)</span>
+    </button>
+
+    <div id="panel-content" class="hidden absolute right-0 top-11 w-80 glass-panel rounded-2xl p-4 text-white shadow-2xl border border-slate-700 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-700 pb-2 mb-3">
+        <div class="font-bold flex items-center gap-2 text-amber-400">
+          <i class="fa-solid fa-coffee"></i> 休息控制台
+        </div>
+        <button onclick="hideWholeControlPanel()" class="text-slate-400 hover:text-red-400 text-xs px-2 py-0.5 rounded bg-slate-800 border border-slate-700 transition">
+          <i class="fa-solid fa-eye-slash"></i> 隱藏 (H)
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <p class="text-[10px] text-slate-400">快捷鍵：B 鍵切換顯示/淡出，R 鍵重置計時器</p>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="btn-toggle-brb" onclick="toggleBrbCard()" class="bg-cyan-600 hover:bg-cyan-500 text-white py-2 rounded-lg font-bold text-xs shadow transition">
+            <i class="fa-solid fa-eye-slash mr-1"></i> 淡出關閉 BRB (B)
+          </button>
+          <button onclick="resetBrbTimer()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 py-2 rounded-lg font-bold text-xs border border-slate-600 transition">
+            ↺ 重置時間 (R)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/brb.js"></script>
+</body>
+</html>

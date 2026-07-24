@@ -1,0 +1,75 @@
+/* OBS Browser Source Transparency Fix */
+html, body {
+  background-color: transparent !important;
+  background: transparent !important;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Inter', 'Noto Sans TC', sans-serif;
+  user-select: none;
+}
+
+/* Webcam Frame Border */
+.webcam-frame {
+  position: relative;
+  border: 3px solid #06b6d4;
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.6), inset 0 0 15px rgba(6, 182, 212, 0.3);
+  transition: all 0.3s ease;
+  background: transparent;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 0.5rem;
+}
+
+/* Aspect Ratios */
+.webcam-frame.aspect-16-9 {
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+}
+
+.webcam-frame.aspect-4-3 {
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+}
+
+.webcam-frame.aspect-circle {
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Tag Badge */
+.webcam-tag {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.3rem 0.8rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Control Panel Glassmorphism */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

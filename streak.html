@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBS 勝負戰績與連勝計數器 - Streak Counter</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter, Noto Sans TC, JetBrains Mono -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@800&family=Noto+Sans+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/streak.css">
+</head>
+<body class="w-full h-full relative">
+
+  <!-- STREAM OVERLAY MAIN CONTAINER -->
+  <main id="main-container" class="w-full h-full flex justify-center items-center p-3 relative z-10">
+    
+    <!-- Streak Glass Card -->
+    <div id="streak-card-container" class="streak-card">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🏆</span>
+        <span id="streak-title-el" class="text-xs font-black text-slate-200">今日遊戲戰績</span>
+      </div>
+
+      <div class="stat-divider"></div>
+
+      <div class="flex items-center gap-3">
+        <!-- Win -->
+        <div class="stat-box">
+          <span class="stat-label text-emerald-400">勝</span>
+          <span id="wins-val" class="stat-value text-emerald-400">0</span>
+        </div>
+
+        <span class="text-slate-600 text-xs font-bold">:</span>
+
+        <!-- Loss -->
+        <div class="stat-box">
+          <span class="stat-label text-rose-400">敗</span>
+          <span id="losses-val" class="stat-value text-rose-400">0</span>
+        </div>
+
+        <div class="stat-divider"></div>
+
+        <!-- Streak -->
+        <div class="stat-box">
+          <span class="stat-label text-amber-400">連勝</span>
+          <div class="flex items-center gap-1">
+            <span class="text-xs">🔥</span>
+            <span id="streak-val" class="stat-value text-amber-400">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- OBS CONTROL PANEL BUTTON & DRAWER -->
+  <div id="control-panel" class="fixed top-3 right-3 z-50 transition-all duration-300">
+    <button id="toggle-panel-btn" onclick="toggleControlPanel()" class="bg-slate-900/90 hover:bg-slate-800 text-white px-3 py-2 rounded-full shadow-2xl border border-slate-700 flex items-center justify-center gap-2 text-xs font-semibold transition hover:scale-105">
+      <i class="fa-solid fa-sliders text-amber-400"></i>
+      <span class="text-[11px]">OBS 控制台 (H)</span>
+    </button>
+
+    <div id="panel-content" class="hidden absolute right-0 top-11 w-80 glass-panel rounded-2xl p-4 text-white shadow-2xl border border-slate-700 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-700 pb-2 mb-3">
+        <div class="font-bold flex items-center gap-2 text-amber-400">
+          <i class="fa-solid fa-trophy"></i> 戰績控制台
+        </div>
+        <button onclick="hideWholeControlPanel()" class="text-slate-400 hover:text-red-400 text-xs px-2 py-0.5 rounded bg-slate-800 border border-slate-700 transition">
+          <i class="fa-solid fa-eye-slash"></i> 隱藏 (H)
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <p class="text-[10px] text-slate-400">快捷鍵：+ / W 增加勝場、- / L 增加敗場、R 重置</p>
+        <div class="grid grid-cols-3 gap-2">
+          <button onclick="addWin()" class="bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded-lg font-bold text-xs shadow transition">
+            +1 勝 (W)
+          </button>
+          <button onclick="addLoss()" class="bg-rose-600 hover:bg-rose-500 text-white py-2 rounded-lg font-bold text-xs shadow transition">
+            +1 敗 (L)
+          </button>
+          <button onclick="resetStreak()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 py-2 rounded-lg font-bold text-xs border border-slate-600 transition">
+            ↺ 重置 (R)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/streak.js"></script>
+</body>
+</html>
