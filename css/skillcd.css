@@ -1,0 +1,111 @@
+/* OBS Browser Source Transparency Fix */
+html, body {
+  background-color: transparent !important;
+  background: transparent !important;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Inter', 'Noto Sans TC', sans-serif;
+  user-select: none;
+}
+
+/* Skill CD Tracker Container */
+.cd-tracker {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.skill-slot {
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.skill-slot:hover {
+  transform: scale(1.08);
+}
+
+.skill-slot.on-cd {
+  border-color: rgba(239, 68, 68, 0.6);
+  box-shadow: 0 0 18px rgba(239, 68, 68, 0.4);
+}
+
+.skill-slot.ready {
+  border-color: rgba(34, 197, 94, 0.7);
+  box-shadow: 0 0 18px rgba(34, 197, 94, 0.4);
+  animation: readyPulse 1s ease-out;
+}
+
+@keyframes readyPulse {
+  0% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* Cooldown overlay sweep */
+.cd-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  clip-path: none;
+  pointer-events: none;
+  transition: clip-path 0.3s linear;
+}
+
+.skill-icon {
+  font-size: 1.5rem;
+  color: #e2e8f0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.skill-cd-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: #fbbf24;
+  z-index: 2;
+  pointer-events: none;
+  min-height: 14px;
+}
+
+.skill-label {
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-top: 0.15rem;
+  z-index: 2;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60px;
+  text-align: center;
+}
+
+/* Control Panel Glassmorphism */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

@@ -11,6 +11,8 @@ import { StreakTool } from './tools/streak.js';
 import { BrbTool } from './tools/brb.js';
 import { WebcamTool } from './tools/webcam.js';
 import { GameinfoTool } from './tools/gameinfo.js';
+import { SkillcdTool } from './tools/skillcd.js';
+import { AchieveTool } from './tools/achieve.js';
 
 class App {
   constructor() {
@@ -26,6 +28,8 @@ class App {
       brb: new BrbTool(),
       webcam: new WebcamTool(),
       gameinfo: new GameinfoTool(),
+      skillcd: new SkillcdTool(),
+      achieve: new AchieveTool(),
     };
 
     this.currentToolKey = null;
@@ -178,6 +182,8 @@ class App {
       brb: { title: '暫離 / 休息中預告卡設定', icon: SVG_ICONS.coffee },
       webcam: { title: '視訊鏡頭霓虹相框設定', icon: SVG_ICONS.webcam },
       gameinfo: { title: '遊戲資訊即時展示卡設定', icon: SVG_ICONS.gamepad },
+      skillcd: { title: '遊戲技能冷卻計時器設定', icon: SVG_ICONS.bolt },
+      achieve: { title: '成就解鎖彈窗設定', icon: SVG_ICONS.achieveTrophy },
     };
 
     const meta = toolMeta[toolKey] || { title: '工具設定', icon: SVG_ICONS.gear };
@@ -374,6 +380,42 @@ class App {
           </select>
         </div>
       `;
+    } else if (toolKey === 'skillcd') {
+      container.innerHTML = `
+        <div class="form-group" style="grid-column: span 2;">
+          <label>技能配置 (格式: 名稱,icon,秒數 用 | 分隔)</label>
+          <input type="text" id="cfgSkills" class="form-control" value="閃現,fa-bolt,300|大招,fa-explosion,90|傳送,fa-circle-nodes,240|治癒,fa-heart-pulse,180">
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label>OBS 控制台按鈕顯示</label>
+          <select id="cfgHideBtn" class="form-control">
+            <option value="false">顯示控制台按鈕</option>
+            <option value="true">預設隱藏 (按 H 可再呼出)</option>
+          </select>
+        </div>
+      `;
+    } else if (toolKey === 'achieve') {
+      container.innerHTML = `
+        <div class="form-group" style="grid-column: span 2;">
+          <label>成就標題 (最多 35 字)</label>
+          <input type="text" id="cfgAchieveTitle" class="form-control" value="首次單場 20 殺！">
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label>成就描述 (最多 40 字)</label>
+          <input type="text" id="cfgAchieveDesc" class="form-control" value="你已解鎖這個史詩成就">
+        </div>
+        <div class="form-group">
+          <label>顯示秒數</label>
+          <input type="number" id="cfgAchieveDuration" class="form-control" value="5" min="2" max="30">
+        </div>
+        <div class="form-group">
+          <label>OBS 控制台按鈕顯示</label>
+          <select id="cfgHideBtn" class="form-control">
+            <option value="false">顯示控制台按鈕</option>
+            <option value="true">預設隱藏 (按 H 可再呼出)</option>
+          </select>
+        </div>
+      `;
     } else if (toolKey === 'gameinfo') {
       container.innerHTML = `
         <div class="form-group" style="grid-column: span 2;">
@@ -493,6 +535,30 @@ class App {
       tool.init({ tag: tagVal, aspect: aspectVal, color: colorVal, hidebtn: hideBtnVal });
       if (stageContent) tool.renderHTML(stageContent, false);
       finalUrl = `${basePath}webcam.html?aspect=${aspectVal}&title=${encodeURIComponent(tagVal)}&color=${encodeURIComponent(colorVal)}&hidebtn=${hideBtnVal}`;
+    } else if (toolKey === 'skillcd') {
+      const cfgSkills = document.getElementById('cfgSkills');
+      const cfgHideBtn = document.getElementById('cfgHideBtn');
+
+      const skillsVal = cfgSkills ? cfgSkills.value : "閃現,fa-bolt,300|大招,fa-explosion,90";
+      const hideBtnVal = cfgHideBtn ? cfgHideBtn.value : "false";
+
+      tool.init({ skills: skillsVal, hidebtn: hideBtnVal });
+      if (stageContent) tool.renderHTML(stageContent, false);
+      finalUrl = `${basePath}skillcd.html?skills=${encodeURIComponent(skillsVal)}&hidebtn=${hideBtnVal}`;
+    } else if (toolKey === 'achieve') {
+      const cfgAchieveTitle = document.getElementById('cfgAchieveTitle');
+      const cfgAchieveDesc = document.getElementById('cfgAchieveDesc');
+      const cfgAchieveDuration = document.getElementById('cfgAchieveDuration');
+      const cfgHideBtn = document.getElementById('cfgHideBtn');
+
+      const titleVal = cfgAchieveTitle ? cfgAchieveTitle.value : "首次單場 20 殺！";
+      const descVal = cfgAchieveDesc ? cfgAchieveDesc.value : "你已解鎖這個史詩成就";
+      const durationVal = cfgAchieveDuration ? cfgAchieveDuration.value : "5";
+      const hideBtnVal = cfgHideBtn ? cfgHideBtn.value : "false";
+
+      tool.init({ title: titleVal, desc: descVal, duration: durationVal, hidebtn: hideBtnVal });
+      if (stageContent) tool.renderHTML(stageContent, false);
+      finalUrl = `${basePath}achieve.html?title=${encodeURIComponent(titleVal)}&desc=${encodeURIComponent(descVal)}&duration=${durationVal}&hidebtn=${hideBtnVal}`;
     } else if (toolKey === 'gameinfo') {
       const cfgGameTitle = document.getElementById('cfgGameTitle');
       const cfgGameDev = document.getElementById('cfgGameDev');

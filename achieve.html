@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBS 成就解鎖彈窗 - Achievement Unlocked Banner</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@800&family=Noto+Sans+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/achieve.css">
+</head>
+<body class="w-full h-full relative">
+
+  <!-- Achievement Banner (hidden by default, triggered by hotkey/button) -->
+  <div id="achieve-banner" class="achievement-banner">
+    <div class="trophy-icon">
+      <i class="fa-solid fa-trophy"></i>
+    </div>
+    <div class="achievement-details">
+      <span class="achievement-label">Achievement Unlocked</span>
+      <h2 id="achieve-title" class="achievement-title">首次單場 20 殺！</h2>
+      <p id="achieve-desc" class="achievement-desc">你已解鎖這個史詩成就</p>
+    </div>
+  </div>
+
+  <!-- OBS Control Panel -->
+  <div id="control-panel" class="fixed top-3 right-3 z-50 transition-all duration-300">
+    <button id="toggle-panel-btn" onclick="toggleControlPanel()" class="bg-slate-900/90 hover:bg-slate-800 text-white px-3 py-2 rounded-full shadow-2xl border border-slate-700 flex items-center justify-center gap-2 text-xs font-semibold transition hover:scale-105">
+      <i class="fa-solid fa-sliders text-amber-400"></i>
+      <span class="text-[11px]">OBS 控制台 (H)</span>
+    </button>
+
+    <div id="panel-content" class="hidden absolute right-0 top-11 w-80 glass-panel rounded-2xl p-4 text-white shadow-2xl border border-slate-700 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-700 pb-2 mb-3">
+        <div class="font-bold flex items-center gap-2 text-amber-400">
+          <i class="fa-solid fa-trophy"></i> 成就控制台
+        </div>
+        <button onclick="hideWholeControlPanel()" class="text-slate-400 hover:text-red-400 text-xs px-2 py-0.5 rounded bg-slate-800 border border-slate-700 transition">
+          <i class="fa-solid fa-eye-slash"></i> 隱藏 (H)
+        </button>
+      </div>
+
+      <div class="space-y-2.5">
+        <p class="text-[10px] text-slate-400">按 Space 或 A 觸發成就彈窗，可自訂成就標題與描述</p>
+
+        <div>
+          <label class="text-[11px] font-semibold text-slate-300 block mb-0.5">成就標題</label>
+          <input type="text" id="custom-title-input" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1 text-xs text-white" value="首次單場 20 殺！" placeholder="成就名稱...">
+        </div>
+        <div>
+          <label class="text-[11px] font-semibold text-slate-300 block mb-0.5">成就描述</label>
+          <input type="text" id="custom-desc-input" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1 text-xs text-white" value="你已解鎖這個史詩成就" placeholder="成就描述...">
+        </div>
+
+        <button onclick="triggerAchievement(document.getElementById('custom-title-input').value, document.getElementById('custom-desc-input').value)" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 py-2 rounded-lg font-bold text-xs shadow transition">
+          <i class="fa-solid fa-trophy mr-1"></i> 觸發成就彈窗 (Space / A)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/achieve.js"></script>
+</body>
+</html>

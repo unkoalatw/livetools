@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBS 遊戲技能冷卻計時器 - Skill CD Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@800&family=Noto+Sans+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/skillcd.css">
+</head>
+<body class="w-full h-full relative">
+
+  <main id="main-container" class="w-full h-full flex justify-center items-center p-3 relative z-10">
+    <div id="skills-container" class="cd-tracker">
+      <!-- Dynamic Skill Slots Rendered by JS -->
+    </div>
+  </main>
+
+  <!-- OBS Control Panel -->
+  <div id="control-panel" class="fixed top-3 right-3 z-50 transition-all duration-300">
+    <button id="toggle-panel-btn" onclick="toggleControlPanel()" class="bg-slate-900/90 hover:bg-slate-800 text-white px-3 py-2 rounded-full shadow-2xl border border-slate-700 flex items-center justify-center gap-2 text-xs font-semibold transition hover:scale-105">
+      <i class="fa-solid fa-sliders text-amber-400"></i>
+      <span class="text-[11px]">OBS 控制台 (H)</span>
+    </button>
+
+    <div id="panel-content" class="hidden absolute right-0 top-11 w-80 glass-panel rounded-2xl p-4 text-white shadow-2xl border border-slate-700 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-700 pb-2 mb-3">
+        <div class="font-bold flex items-center gap-2 text-amber-400">
+          <i class="fa-solid fa-bolt"></i> 技能冷卻控制台
+        </div>
+        <button onclick="hideWholeControlPanel()" class="text-slate-400 hover:text-red-400 text-xs px-2 py-0.5 rounded bg-slate-800 border border-slate-700 transition">
+          <i class="fa-solid fa-eye-slash"></i> 隱藏 (H)
+        </button>
+      </div>
+      <div class="space-y-2">
+        <p class="text-[10px] text-slate-400">按數字鍵 1~4 啟動對應技能冷卻，再按一次取消。點擊技能格也可觸發。</p>
+        <div class="grid grid-cols-4 gap-1.5">
+          <button onclick="startCD(0)" class="bg-slate-800 hover:bg-slate-700 text-white py-1.5 rounded-lg font-bold text-[10px] border border-slate-600 transition">1: 閃現</button>
+          <button onclick="startCD(1)" class="bg-slate-800 hover:bg-slate-700 text-white py-1.5 rounded-lg font-bold text-[10px] border border-slate-600 transition">2: 大招</button>
+          <button onclick="startCD(2)" class="bg-slate-800 hover:bg-slate-700 text-white py-1.5 rounded-lg font-bold text-[10px] border border-slate-600 transition">3: 傳送</button>
+          <button onclick="startCD(3)" class="bg-slate-800 hover:bg-slate-700 text-white py-1.5 rounded-lg font-bold text-[10px] border border-slate-600 transition">4: 治癒</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/skillcd.js"></script>
+</body>
+</html>
