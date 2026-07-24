@@ -176,6 +176,16 @@ function toggleControlPanel() {
   content?.classList.toggle('hidden');
 }
 
+function hideWholeControlPanel() {
+  const panel = document.getElementById('control-panel');
+  panel?.classList.add('hidden');
+}
+
+function toggleWholeControlPanel() {
+  const panel = document.getElementById('control-panel');
+  panel?.classList.toggle('hidden');
+}
+
 // Modal Events Editor
 function openEditModal() {
   const container = document.getElementById('modal-events-list');
@@ -256,7 +266,7 @@ window.addEventListener('keydown', (e) => {
   if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
 
   if (e.key === 'h' || e.key === 'H') {
-    toggleControlPanel();
+    toggleWholeControlPanel();
   } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
     nextStage();
   } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
@@ -272,4 +282,9 @@ window.addEventListener('resize', updateLayoutOrientation);
 window.onload = function() {
   updateLayoutOrientation();
   startTimerLoop();
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('hidebtn') === 'true' || urlParams.get('controls') === 'false') {
+    hideWholeControlPanel();
+  }
 };

@@ -249,11 +249,18 @@ class App {
           <label>時間軸階段列表 (格式: 階段名稱,分鐘|階段名稱,分鐘)</label>
           <input type="text" id="cfgEvents" class="form-control" value="開播準備與雜談,15|主要遊戲實況,45|觀眾互動 QA,20|特別活動,15|晚安下播,10">
         </div>
-        <div class="form-group" style="grid-column: span 2;">
+        <div class="form-group">
           <label>倒數進行模式</label>
           <select id="cfgMode" class="form-control">
-            <option value="auto">自動進行 (依分鐘數自動切換下一階段)</option>
-            <option value="manual">手動觸發 (使用控制台/快捷鍵切換)</option>
+            <option value="auto">自動進行 (依分鐘數自動切換)</option>
+            <option value="manual">手動觸發 (控制台/快捷鍵切換)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>OBS 控制台按鈕顯示</label>
+          <select id="cfgHideBtn" class="form-control">
+            <option value="false">顯示控制台按鈕</option>
+            <option value="true">預設隱藏 (按 H 可再呼出)</option>
           </select>
         </div>
       `;
@@ -278,17 +285,19 @@ class App {
     if (toolKey === 'timeline') {
       const cfgEvents = document.getElementById('cfgEvents');
       const cfgMode = document.getElementById('cfgMode');
+      const cfgHideBtn = document.getElementById('cfgHideBtn');
 
       const eventsVal = cfgEvents ? cfgEvents.value : "開播準備與雜談,15|主要遊戲實況,45";
       const modeVal = cfgMode ? cfgMode.value : "auto";
+      const hideBtnVal = cfgHideBtn ? cfgHideBtn.value : "false";
 
-      tool.init({ events: eventsVal, mode: modeVal });
+      tool.init({ events: eventsVal, mode: modeVal, hidebtn: hideBtnVal });
       if (stageContent) {
         tool.renderHTML(stageContent, false);
       }
 
       const basePath = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-      finalUrl = `${basePath}timeline.html?events=${encodeURIComponent(eventsVal)}&mode=${modeVal}`;
+      finalUrl = `${basePath}timeline.html?events=${encodeURIComponent(eventsVal)}&mode=${modeVal}&hidebtn=${hideBtnVal}`;
     } else {
       const params = new URLSearchParams();
       params.set('overlay', toolKey);
