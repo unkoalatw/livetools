@@ -1,4 +1,5 @@
 /* OBStools - Core Application Entry Point */
+import { SVG_ICONS } from './icons.js';
 import { TimerTool } from './tools/timer.js';
 import { GoalTool } from './tools/goal.js';
 import { MarqueeTool } from './tools/marquee.js';
@@ -108,11 +109,11 @@ class App {
       const urlInput = document.getElementById('obsUrlInput');
       if (urlInput && urlInput.value) {
         navigator.clipboard.writeText(urlInput.value).then(() => {
-          this.showToast('✅ OBS 網址已複製到剪貼簿！');
+          this.showToast('OBS 網址已複製到剪貼簿！');
         }).catch(() => {
           urlInput.select();
           document.execCommand('copy');
-          this.showToast('✅ OBS 網址已複製到剪貼簿！');
+          this.showToast('OBS 網址已複製到剪貼簿！');
         });
       }
     });
@@ -160,23 +161,26 @@ class App {
     this.currentToolKey = toolKey;
     const modal = document.getElementById('toolModal');
     const modalTitle = document.getElementById('modalTitle');
+    const modalIcon = document.getElementById('modalIcon');
     const formFields = document.getElementById('modalFormFields');
 
-    const titles = {
-      timer: '⏱️ 倒數計時器設定',
-      goal: '🎯 目標進度條設定',
-      marquee: '📢 跑馬燈公告欄設定',
-      wheel: '🎡 抽獎決策轉盤設定',
-      soundboard: '🔊 直播音效控制器',
-      timeline: '⏳ 直播時間軸流程設定',
-      checklist: '📝 主播即時備忘錄設定',
-      streak: '🏆 勝負戰績與連勝計數器設定',
-      brb: '☕ 暫離 / 休息中預告卡設定',
-      webcam: '📸 視訊鏡頭霓虹相框設定',
+    const toolMeta = {
+      timer: { title: '倒數計時器設定', icon: SVG_ICONS.timer },
+      goal: { title: '目標進度條設定', icon: SVG_ICONS.target },
+      marquee: { title: '跑馬燈公告欄設定', icon: SVG_ICONS.megaphone },
+      wheel: { title: '抽獎決策轉盤設定', icon: SVG_ICONS.wheel },
+      soundboard: { title: '直播音效控制器', icon: SVG_ICONS.soundboard },
+      timeline: { title: '直播時間軸流程設定', icon: SVG_ICONS.hourglass },
+      checklist: { title: '主播即時備忘錄設定', icon: SVG_ICONS.checklist },
+      streak: { title: '勝負戰績與連勝計數器設定', icon: SVG_ICONS.trophy },
+      brb: { title: '暫離 / 休息中預告卡設定', icon: SVG_ICONS.coffee },
+      webcam: { title: '視訊鏡頭霓虹相框設定', icon: SVG_ICONS.webcam },
     };
 
-    if (modalTitle) modalTitle.textContent = titles[toolKey] || '工具設定';
-    
+    const meta = toolMeta[toolKey] || { title: '工具設定', icon: SVG_ICONS.gear };
+    if (modalTitle) modalTitle.textContent = meta.title;
+    if (modalIcon) modalIcon.innerHTML = meta.icon;
+
     this.renderFormFields(toolKey, formFields);
     this.updateModalState();
 
@@ -229,7 +233,7 @@ class App {
       container.innerHTML = `
         <div class="form-group" style="grid-column: span 2;">
           <label>公告內容 (可用 | 分隔多段內容)</label>
-          <input type="text" id="cfgText" class="form-control" value="🔥 歡迎來到直播間！點擊追蹤開啟小鈴鐺 | 💬 聊天室請保持禮貌 | 🎁 訂閱解鎖限定貼圖！">
+          <input type="text" id="cfgText" class="form-control" value="歡迎來到直播間！點擊追蹤開啟小鈴鐺 | 聊天室請保持禮貌 | 訂閱解鎖限定貼圖！">
         </div>
         <div class="form-group">
           <label>滾動速度 (秒/輪)</label>
@@ -262,14 +266,14 @@ class App {
           <input type="text" id="cfgEvents" class="form-control" value="開播準備與雜談,15|主要遊戲實況,45|觀眾互動 QA,20|特別活動,15|晚安下播,10">
         </div>
         <div class="form-group" style="grid-column: span 2;">
-          <label>📢 跑馬燈公告內容</label>
-          <input type="text" id="cfgMarqueeText" class="form-control" value="🔥 歡迎來到直播間！點擊追蹤開啟小鈴鐺 | 💬 聊天室請保持禮貌 | 🎁 訂閱解鎖限定貼圖！">
+          <label>跑馬燈公告內容</label>
+          <input type="text" id="cfgMarqueeText" class="form-control" value="歡迎來到直播間！點擊追蹤開啟小鈴鐺 | 聊天室請保持禮貌 | 訂閱解鎖限定貼圖！">
         </div>
         <div class="form-group">
           <label>預設顯示內容</label>
           <select id="cfgView" class="form-control">
-            <option value="timeline">⏳ 時間軸模式 (按 M 切換跑馬燈)</option>
-            <option value="marquee">📢 跑馬燈模式 (按 M 切換時間軸)</option>
+            <option value="timeline">時間軸模式 (按 M 切換跑馬燈)</option>
+            <option value="marquee">跑馬燈模式 (按 M 切換時間軸)</option>
           </select>
         </div>
         <div class="form-group">
@@ -345,7 +349,7 @@ class App {
       container.innerHTML = `
         <div class="form-group">
           <label>標籤銘牌文字</label>
-          <input type="text" id="cfgWebcamTag" class="form-control" value="🔴 LIVE">
+          <input type="text" id="cfgWebcamTag" class="form-control" value="LIVE">
         </div>
         <div class="form-group">
           <label>相框型態與比例</label>
@@ -394,7 +398,7 @@ class App {
       const cfgHideBtn = document.getElementById('cfgHideBtn');
 
       const eventsVal = cfgEvents ? cfgEvents.value : "開播準備與雜談,15|主要遊戲實況,45";
-      const marqueeVal = cfgMarqueeText ? cfgMarqueeText.value : "🔥 歡迎來到直播間！";
+      const marqueeVal = cfgMarqueeText ? cfgMarqueeText.value : "歡迎來到直播間！";
       const viewVal = cfgView ? cfgView.value : "timeline";
       const modeVal = cfgMode ? cfgMode.value : "auto";
       const hideBtnVal = cfgHideBtn ? cfgHideBtn.value : "false";
@@ -444,7 +448,7 @@ class App {
       const cfgWebcamColor = document.getElementById('cfgWebcamColor');
       const cfgHideBtn = document.getElementById('cfgHideBtn');
 
-      const tagVal = cfgWebcamTag ? cfgWebcamTag.value : "🔴 LIVE";
+      const tagVal = cfgWebcamTag ? cfgWebcamTag.value : "LIVE";
       const aspectVal = cfgWebcamAspect ? cfgWebcamAspect.value : "16-9";
       const colorVal = cfgWebcamColor ? cfgWebcamColor.value : "#06b6d4";
       const hideBtnVal = cfgHideBtn ? cfgHideBtn.value : "false";
@@ -492,7 +496,7 @@ class App {
     const container = document.getElementById('toastContainer');
     const toast = document.createElement('div');
     toast.className = 'toast';
-    toast.textContent = message;
+    toast.innerHTML = `<span style="color:#10b981;">✓</span> ${message}`;
     container.appendChild(toast);
 
     setTimeout(() => {

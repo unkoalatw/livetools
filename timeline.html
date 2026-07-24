@@ -63,11 +63,11 @@
       <div class="mb-3">
         <label class="text-[11px] font-semibold text-slate-300 block mb-1">切換顯示內容 (快捷鍵 M)</label>
         <div class="grid grid-cols-2 gap-1.5 bg-slate-900/60 p-1 rounded-lg border border-slate-800 text-center">
-          <button id="btn-view-timeline" onclick="setDisplayView('timeline')" class="py-1.5 text-[11px] rounded-md font-bold bg-indigo-600 text-white border border-indigo-400/50 shadow transition">
-            ⏳ 時間軸模式
+          <button id="btn-view-timeline" onclick="setDisplayView('timeline')" class="py-1.5 text-[11px] rounded-md font-bold bg-indigo-600 text-white border border-indigo-400/50 shadow transition flex items-center justify-center gap-1">
+            <i class="fa-solid fa-hourglass-half"></i> 時間軸模式
           </button>
-          <button id="btn-view-marquee" onclick="setDisplayView('marquee')" class="py-1.5 text-[11px] rounded-md font-bold text-slate-400 hover:text-white border border-transparent transition">
-            📢 跑馬燈模式
+          <button id="btn-view-marquee" onclick="setDisplayView('marquee')" class="py-1.5 text-[11px] rounded-md font-bold text-slate-400 hover:text-white border border-transparent transition flex items-center justify-center gap-1">
+            <i class="fa-solid fa-bullhorn"></i> 跑馬燈模式
           </button>
         </div>
       </div>
@@ -120,11 +120,15 @@
 
       <!-- Edit Marquee Section -->
       <div class="mb-3 p-2.5 bg-slate-900/90 rounded-lg border border-slate-700">
-        <label class="text-[11px] font-semibold text-amber-300 block mb-1">📢 跑馬燈公告內容</label>
+        <label class="text-[11px] font-semibold text-amber-300 flex items-center gap-1.5 mb-1">
+          <i class="fa-solid fa-bullhorn text-amber-400"></i> 跑馬燈公告內容
+        </label>
         <input type="text" id="marquee-input-text" class="w-full bg-slate-800 border border-slate-600 rounded px-2.5 py-1.5 text-xs text-white" placeholder="輸入跑馬燈公告內容...">
       </div>
 
-      <label class="text-[11px] font-semibold text-slate-300 block mb-1">⏳ 時間軸階段列表</label>
+      <label class="text-[11px] font-semibold text-slate-300 flex items-center gap-1.5 mb-1">
+        <i class="fa-solid fa-hourglass-half text-indigo-400"></i> 時間軸階段列表
+      </label>
       <div id="modal-events-list" class="space-y-2 overflow-y-auto flex-1 pr-1 mb-3 text-xs">
         <!-- Rendered by JS -->
       </div>
@@ -141,7 +145,6 @@
     </div>
   </div>
 
-  <!-- Extracted JavaScript Logic -->
   <script src="js/timeline.js"></script>
 </body>
 </html>

@@ -24,13 +24,16 @@
     <!-- Top Navigation -->
     <nav class="navbar">
       <a href="#" class="logo">
-        <div class="logo-icon">🎥</div>
+        <div class="logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>
+        </div>
         <div class="logo-text">OBS<span>Tools</span></div>
       </a>
       
       <div class="nav-actions">
         <button id="btnGuide" class="btn btn-secondary btn-sm">
-          <span>📖 OBS 設定教學</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span>OBS 設定教學</span>
         </button>
         <div class="hero-badge" style="margin: 0;">
           <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
@@ -41,7 +44,10 @@
 
     <!-- Hero Banner -->
     <header class="hero">
-      <div class="hero-badge">⚡ 專為 Twitch / YouTube / OBS Studio 設計</div>
+      <div class="hero-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        專為 Twitch / YouTube / OBS Studio 設計
+      </div>
       <h1 class="hero-title">高顏值 <span class="gradient-text">直播視覺工具箱</span></h1>
       <p class="hero-desc">
         提供倒數計時、目標進度條、抽獎轉盤、跑馬燈與音效板。即時自訂樣式，一鍵複製網址直接貼入 OBS 瀏覽器來源！
@@ -54,14 +60,28 @@
       <!-- Toolbar Filter & Search -->
       <div class="toolbar">
         <div class="filter-tabs">
-          <button class="tab-btn active" data-category="all">✨ 全部工具</button>
-          <button class="tab-btn" data-category="overlay">🎨 畫面元件</button>
-          <button class="tab-btn" data-category="interactive">🎮 互動娛樂</button>
-          <button class="tab-btn" data-category="audio">🔊 音效聲光</button>
+          <button class="tab-btn active" data-category="all">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:-2px; margin-right:4px;"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z"/></svg>
+            全部工具
+          </button>
+          <button class="tab-btn" data-category="overlay">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:-2px; margin-right:4px;"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.92 0 1.7-.72 1.7-1.65 0-.43-.17-.83-.45-1.14-.28-.31-.45-.71-.45-1.15 0-.92.78-1.66 1.7-1.66h2.5c3.04 0 5.5-2.46 5.5-5.5 0-5.5-4.5-10-10-10z"/></svg>
+            畫面元件
+          </button>
+          <button class="tab-btn" data-category="interactive">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:-2px; margin-right:4px;"><rect width="20" height="12" x="2" y="6" rx="6"/></svg>
+            互動娛樂
+          </button>
+          <button class="tab-btn" data-category="audio">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline; vertical-align:-2px; margin-right:4px;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+            音效聲光
+          </button>
         </div>
 
         <div class="search-box">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </span>
           <input type="text" id="searchInput" class="search-input" placeholder="搜尋直播工具 (如: 倒數, 抽獎)...">
         </div>
       </div>
@@ -73,7 +93,9 @@
         <div class="tool-card glass" data-category="overlay" data-keywords="計時器 倒數 開播 timer">
           <div>
             <div class="tool-header">
-              <div class="tool-icon">⏱️</div>
+              <div class="tool-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
               <div class="tool-info">
                 <h3>直播倒數計時器</h3>
                 <span class="tool-tag">畫面 Overlay</span>
@@ -85,7 +107,10 @@
           </div>
           
           <div class="tool-footer">
-            <button class="btn btn-primary btn-open-modal" data-tool="timer">⚙️ 自訂與 OBS 網址</button>
+            <button class="btn btn-primary btn-open-modal" data-tool="timer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+              自訂與 OBS 網址
+            </button>
           </div>
         </div>
 
@@ -93,7 +118,9 @@
         <div class="tool-card glass" data-category="overlay" data-keywords="目標 訂閱 追蹤 goal sub bar">
           <div>
             <div class="tool-header">
-              <div class="tool-icon" style="background: rgba(6, 182, 212, 0.15); color: #67e8f9;">🎯</div>
+              <div class="tool-icon" style="background: rgba(6, 182, 212, 0.15); color: #67e8f9;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+              </div>
               <div class="tool-info">
                 <h3>追蹤 / 訂閱目標條</h3>
                 <span class="tool-tag">畫面 Overlay</span>
@@ -105,7 +132,10 @@
           </div>
           
           <div class="tool-footer">
-            <button class="btn btn-primary btn-open-modal" data-tool="goal">⚙️ 自訂與 OBS 網址</button>
+            <button class="btn btn-primary btn-open-modal" data-tool="goal">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+              自訂與 OBS 網址
+            </button>
           </div>
         </div>
 
@@ -113,7 +143,9 @@
         <div class="tool-card glass" data-category="overlay" data-keywords="跑馬燈 公告 規矩 社群 marquee">
           <div>
             <div class="tool-header">
-              <div class="tool-icon" style="background: rgba(236, 72, 153, 0.15); color: #f472b6;">📢</div>
+              <div class="tool-icon" style="background: rgba(236, 72, 153, 0.15); color: #f472b6;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+              </div>
               <div class="tool-info">
                 <h3>動態跑馬燈公告欄</h3>
                 <span class="tool-tag">畫面 Overlay</span>
@@ -125,7 +157,10 @@
           </div>
           
           <div class="tool-footer">
-            <button class="btn btn-primary btn-open-modal" data-tool="marquee">⚙️ 自訂與 OBS 網址</button>
+            <button class="btn btn-primary btn-open-modal" data-tool="marquee">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+              自訂與 OBS 網址
+            </button>
           </div>
         </div>
 
@@ -133,7 +168,9 @@
         <div class="tool-card glass" data-category="interactive" data-keywords="抽獎 轉盤 遊戲 決策 wheel raffle">
           <div>
             <div class="tool-header">
-              <div class="tool-icon" style="background: rgba(16, 185, 129, 0.15); color: #6ee7b7;">🎡</div>
+              <div class="tool-icon" style="background: rgba(16, 185, 129, 0.15); color: #6ee7b7;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10H12V2z"/><path d="M12 12 2.1 10.5"/></svg>
+              </div>
               <div class="tool-info">
                 <h3>直播抽獎 / 決策轉盤</h3>
                 <span class="tool-tag">互動娛樂</span>
@@ -145,7 +182,10 @@
           </div>
           
           <div class="tool-footer">
-            <button class="btn btn-primary btn-open-modal" data-tool="wheel">⚙️ 自訂與 OBS 網址</button>
+            <button class="btn btn-primary btn-open-modal" data-tool="wheel">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+              自訂與 OBS 網址
+            </button>
           </div>
         </div>
 
@@ -153,7 +193,9 @@
         <div class="tool-card glass" data-category="overlay" data-keywords="時間軸 階段 流程 節目表 timeline overlay">
           <div>
             <div class="tool-header">
-              <div class="tool-icon" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">⏳</div>
+              <div class="tool-icon" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
+              </div>
               <div class="tool-info">
                 <h3>直播時間軸 / 節目流程條</h3>
                 <span class="tool-tag">畫面 Overlay</span>
@@ -167,7 +209,10 @@
           </div>
           
           <div class="tool-footer">
-            <button class="btn btn-primary btn-open-modal" data-tool="timeline">⚙️ 自訂與 OBS 網址</button>
+            <button class="btn btn-primary btn-open-modal" data-tool="timeline">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+              自訂與 OBS 網址
+            </button>
           </div>
         </div>
 
@@ -175,7 +220,9 @@
         <div class="tool-card glass" data-category="interactive" data-keywords="備忘錄 待辦事項 清單 主播 checklist notes">
           <div>
             <div class="tool-header">
-              <div class="tool-icon" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">📝</div>
+              <div class="tool-icon" style="background: rgba(168, 85, 247, 0.15); color: #c084fc;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+              </div>
               <div class="tool-info">
                 <h3>主播即時備忘錄 / 待辦事項</h3>
                 <span class="tool-tag">畫面 / 營運</span>
@@ -189,7 +236,10 @@
           </div>
           
           <div class="tool-footer">
-            <button class="btn btn-primary btn-open-modal" data-tool="checklist">⚙️ 自訂與 OBS 網址</button>
+            <button class="btn btn-primary btn-open-modal" data-tool="checklist">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+              自訂與 OBS 網址
+            </button>
           </div>
         </div>
 
@@ -197,7 +247,9 @@
         <div class="tool-card glass" data-category="interactive" data-keywords="戰績 勝負 連勝 計數器 streak win loss">
           <div>
             <div class="tool-header">
-              <div class="tool-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">🏆</div>
+              <div class="tool-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
+              </div>
               <div class="tool-info">
                 <h3>勝負戰績與連勝計數器</h3>
                 <span class="tool-tag">畫面 / 遊戲</span>
@@ -211,7 +263,10 @@
           </div>
           
           <div class="tool-footer">
-            <button class="btn btn-primary btn-open-modal" data-tool="streak">⚙️ 自訂與 OBS 網址</button>
+            <button class="btn btn-primary btn-open-modal" data-tool="streak">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+              自訂與 OBS 網址
+            </button>
           </div>
         </div>
 
@@ -219,7 +274,9 @@
         <div class="tool-card glass" data-category="overlay" data-keywords="暫離 休息 中場 brb break hold">
           <div>
             <div class="tool-header">
-              <div class="tool-icon" style="background: rgba(6, 182, 212, 0.15); color: #67e8f9;">☕</div>
+              <div class="tool-icon" style="background: rgba(6, 182, 212, 0.15); color: #67e8f9;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/></svg>
+              </div>
               <div class="tool-info">
                 <h3>暫離 / 休息中預告卡</h3>
                 <span class="tool-tag">畫面 Overlay</span>
@@ -233,7 +290,10 @@
           </div>
           
           <div class="tool-footer">
-            <button class="btn btn-primary btn-open-modal" data-tool="brb">⚙️ 自訂與 OBS 網址</button>
+            <button class="btn btn-primary btn-open-modal" data-tool="brb">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+              自訂與 OBS 網址
+            </button>
           </div>
         </div>
 
@@ -241,7 +301,9 @@
         <div class="tool-card glass" data-category="overlay" data-keywords="相框 視訊 鏡頭 霓虹 webcam frame">
           <div>
             <div class="tool-header">
-              <div class="tool-icon" style="background: rgba(236, 72, 153, 0.15); color: #f472b6;">📸</div>
+              <div class="tool-icon" style="background: rgba(236, 72, 153, 0.15); color: #f472b6;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+              </div>
               <div class="tool-info">
                 <h3>視訊鏡頭霓虹相框</h3>
                 <span class="tool-tag">畫面 Overlay</span>
@@ -255,7 +317,10 @@
           </div>
           
           <div class="tool-footer">
-            <button class="btn btn-primary btn-open-modal" data-tool="webcam">⚙️ 自訂與 OBS 網址</button>
+            <button class="btn btn-primary btn-open-modal" data-tool="webcam">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+              自訂與 OBS 網址
+            </button>
           </div>
         </div>
 
@@ -263,7 +328,9 @@
         <div class="tool-card glass" data-category="audio" data-keywords="音效 快捷 效果音 歡呼 soundboard">
           <div>
             <div class="tool-header">
-              <div class="tool-icon" style="background: rgba(245, 158, 11, 0.15); color: #fcd34d;">🔊</div>
+              <div class="tool-icon" style="background: rgba(245, 158, 11, 0.15); color: #fcd34d;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+              </div>
               <div class="tool-info">
                 <h3>快捷直播音效板</h3>
                 <span class="tool-tag">音效聲光</span>
@@ -275,7 +342,10 @@
           </div>
           
           <div class="tool-footer">
-            <button class="btn btn-primary btn-open-modal" data-tool="soundboard">⚙️ 開啟音效控制器</button>
+            <button class="btn btn-primary btn-open-modal" data-tool="soundboard">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              開啟音效控制器
+            </button>
           </div>
         </div>
 
@@ -289,7 +359,9 @@
     <div class="modal-content">
       <div class="modal-header">
         <div class="modal-title">
-          <span id="modalIcon">⚙️</span>
+          <span id="modalIcon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          </span>
           <span id="modalTitle">工具設定與 OBS 產生器</span>
         </div>
         <button id="btnCloseModal" class="close-btn">&times;</button>
@@ -320,7 +392,10 @@
           </label>
           <div class="obs-url-input-wrap">
             <input type="text" id="obsUrlInput" readonly value="">
-            <button id="btnCopyObsUrl" class="btn btn-accent">📋 複製網址</button>
+            <button id="btnCopyObsUrl" class="btn btn-accent">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+              複製網址
+            </button>
           </div>
           <p style="font-size: 0.8rem; color: var(--text-muted);">
             💡 提示：在 OBS Studio 新增來源 ➔ 選擇「瀏覽器 (Browser)」➔ 貼上此網址即可將元件放入直播畫面！
@@ -341,7 +416,7 @@
       <div class="modal-body" style="gap: 1.2rem; font-size: 0.95rem; line-height: 1.6;">
         <div style="background: rgba(139, 92, 246, 0.1); border-left: 4px solid var(--primary); padding: 1rem; border-radius: 4px;">
           <strong>第一步：複製專屬網址</strong><br>
-          在任何工具點擊「⚙️ 自訂與 OBS 網址」，調整好您喜歡的顏色與文字後，點擊「📋 複製網址」。
+          在任何工具點擊「自訂與 OBS 網址」，調整好您喜歡的顏色與文字後，點擊「複製網址」。
         </div>
 
         <div style="background: rgba(6, 182, 212, 0.1); border-left: 4px solid var(--secondary); padding: 1rem; border-radius: 4px;">
