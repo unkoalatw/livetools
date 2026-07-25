@@ -111,11 +111,74 @@ function renderGameCard() {
   if (coverEl && gameData.cover) coverEl.src = gameData.cover;
 }
 
+async function fetchSteamAppDetails(appId) {
+  try {
+    // Steam Store API via corsproxy / fallback
+    const res = await fetch(`https://store.steampowered.com/api/appdetails?appids=${appId}&l=zh-tw`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data[appId] && data[appId].success) {
+        const app = data[appId].data;
+        const genres = app.genres ? app.genres.map(g => g.description).slice(0, 2).join(', ') : "遊戲";
+        const dev = app.developers ? app.developers.join(', ') : (app.publishers ? app.publishers.join(', ') : "Steam");
+        
+        let priceStr = "免費遊玩";
+        if (app.is_free) {
+          priceStr = "免費遊玩 (Free)";
+        } else if (app.price_overview) {
+          priceStr = app.price_overview.final_formatted || `NT$ ${Math.round(app.price_overview.final / 100)}`;
+        }
+
+        let ratingVal = "9.0";
+        if (app.metacritic && app.metacritic.score) {
+          ratingVal = (app.metacritic.score / 10).toFixed(1);
+        } else if (app.recommendations && app.recommendations.total) {
+          ratingVal = app.recommendations.total > 10000 ? "9.5" : "9.0";
+        }
+
+        return {
+          title: truncateText(app.name, 35),
+          developer: truncateText(dev, 30),
+          genre: truncateText(genres, 25),
+          rating: ratingVal,
+          price: priceStr,
+          cover: app.header_image || `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`
+        };
+      }
+    }
+  } catch (err) {
+    console.warn("Steam API fetch error, trying rawg...", err);
+  }
+  return null;
+}
+
 async function searchGameInfo(query) {
   if (!query) return;
-  const q = query.toLowerCase().trim();
+  const rawQuery = query.trim();
+  const q = rawQuery.toLowerCase();
 
-  // 1. Check Presets first
+  // Parse Steam URL or AppID input
+  let steamAppId = null;
+  const steamUrlMatch = rawQuery.match(/store\.steampowered\.com\/app\/(\d+)/i);
+  if (steamUrlMatch) {
+    steamAppId = steamUrlMatch[1];
+  } else if (/^\d{4,8}$/.test(rawQuery)) {
+    steamAppId = rawQuery;
+  }
+
+  // 1. If Steam URL or AppID detected, fetch Steam directly
+  if (steamAppId) {
+    showToastNotification(`正從 Steam 抓取 AppID ${steamAppId} 資訊...`);
+    const steamData = await fetchSteamAppDetails(steamAppId);
+    if (steamData) {
+      gameData = steamData;
+      renderGameCard();
+      showToastNotification(`已成功從 Steam 抓取：${truncateText(steamData.title, 20)}`);
+      return;
+    }
+  }
+
+  // 2. Check Presets
   for (const [key, data] of Object.entries(PRESET_GAMES)) {
     if (key.toLowerCase().includes(q) || data.title.toLowerCase().includes(q)) {
       gameData = { ...data };
@@ -125,23 +188,24 @@ async function searchGameInfo(query) {
     }
   }
 
-  // 2. Fetch live from RAWG Public Game API if not preset
+  // 3. Fetch live from RAWG Public Game API if not preset
   try {
-    const res = await fetch(`https://api.rawg.io/api/games?key=d4957e0340384f9382ed0a80e14c1143&search=${encodeURIComponent(query)}&page_size=1`);
+    showToastNotification(`正從網絡自動抓取遊戲資訊...`);
+    const res = await fetch(`https://api.rawg.io/api/games?key=d4957e0340384f9382ed0a80e14c1143&search=${encodeURIComponent(rawQuery)}&page_size=1`);
     if (res.ok) {
       const data = await res.json();
       if (data.results && data.results.length > 0) {
         const game = data.results[0];
         gameData = {
           title: truncateText(game.name, 35),
-          developer: game.developers ? game.developers.map(d => d.name).join(', ') : (game.publishers ? game.publishers.map(p => p.name).join(', ') : "RAWG Games"),
-          genre: game.genres ? game.genres.slice(0, 2).map(g => g.name).join(', ') : "Action",
+          developer: truncateText(game.developers ? game.developers.map(d => d.name).join(', ') : (game.publishers ? game.publishers.map(p => p.name).join(', ') : "網絡遊戲"), 30),
+          genre: truncateText(game.genres ? game.genres.slice(0, 2).map(g => g.name).join(', ') : "Action", 25),
           rating: game.rating ? (game.rating * 2).toFixed(1) : "9.0",
           price: "熱門發售中",
           cover: game.background_image || "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80"
         };
         renderGameCard();
-        showToastNotification(`已抓取網絡遊戲資訊：${truncateText(game.name, 20)}`);
+        showToastNotification(`已自動抓取網絡遊戲資訊：${truncateText(game.name, 20)}`);
         return;
       }
     }
@@ -150,7 +214,7 @@ async function searchGameInfo(query) {
   }
 
   // Fallback if query not found
-  gameData.title = truncateText(query, 35);
+  gameData.title = truncateText(rawQuery, 35);
   renderGameCard();
 }
 

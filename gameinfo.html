@@ -71,13 +71,14 @@
 
       <div class="space-y-3">
         <div>
-          <label class="text-[11px] font-semibold text-slate-300 block mb-1">🔍 搜尋與自動抓取遊戲資訊</label>
+          <label class="text-[11px] font-semibold text-slate-300 block mb-1">🌐 輸入遊戲平台網址 / AppID / 名稱</label>
           <div class="flex gap-1.5 mb-2">
-            <input type="text" id="game-search-input" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1 text-xs text-white" placeholder="輸入遊戲名稱 (如: Elden Ring)...">
-            <button onclick="searchGameInfo(document.getElementById('game-search-input').value)" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded font-bold text-xs shrink-0 transition">
-              抓取
+            <input type="text" id="game-search-input" class="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1 text-xs text-white" placeholder="Steam 網址 / AppID / 遊戲名稱...">
+            <button onclick="searchGameInfo(document.getElementById('game-search-input').value)" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded font-bold text-xs shrink-0 transition flex items-center gap-1">
+              <i class="fa-solid fa-cloud-arrow-down"></i> 抓取
             </button>
           </div>
+          <p class="text-[10px] text-slate-400">支援貼上 Steam 商店連結 (如 store.steampowered.com/app/1086940)、AppID 或一般中英文遊戲名稱。</p>
         </div>
 
         <div>

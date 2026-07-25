@@ -419,7 +419,17 @@ class App {
     } else if (toolKey === 'gameinfo') {
       container.innerHTML = `
         <div class="form-group" style="grid-column: span 2;">
-          <label>遊戲名稱 (輸入或搜尋)</label>
+          <label>🌐 自動抓取 (輸入 Steam 網址 / AppID / 遊戲名稱)</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" id="cfgGameSearchQuery" class="form-control" placeholder="貼上 Steam 網址或輸入名稱 (例: Elden Ring)...">
+            <button type="button" id="btnAutoFetchGame" class="btn btn-primary" style="white-space: nowrap; padding: 0.4rem 0.8rem; font-size: 0.75rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              自動抓取
+            </button>
+          </div>
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label>遊戲名稱 (Title)</label>
           <input type="text" id="cfgGameTitle" class="form-control" value="黑神話：悟空 (Black Myth: Wukong)">
         </div>
         <div class="form-group">
@@ -450,6 +460,80 @@ class App {
           </select>
         </div>
       `;
+
+      setTimeout(() => {
+        const btnFetch = document.getElementById('btnAutoFetchGame');
+        const inputQuery = document.getElementById('cfgGameSearchQuery');
+        if (btnFetch && inputQuery) {
+          btnFetch.addEventListener('click', async () => {
+            const query = inputQuery.value.trim();
+            if (!query) return;
+            btnFetch.innerText = '抓取中...';
+            btnFetch.disabled = true;
+
+            try {
+              let fetched = null;
+              // Check Steam match
+              const steamMatch = query.match(/store\.steampowered\.com\/app\/(\d+)/i) || query.match(/^(\d{4,8})$/);
+              if (steamMatch) {
+                const appId = steamMatch[1];
+                const res = await fetch(`https://store.steampowered.com/api/appdetails?appids=${appId}&l=zh-tw`);
+                if (res.ok) {
+                  const data = await res.json();
+                  if (data[appId] && data[appId].success) {
+                    const app = data[appId].data;
+                    fetched = {
+                      title: app.name.substring(0, 35),
+                      dev: (app.developers ? app.developers.join(', ') : 'Steam').substring(0, 30),
+                      genre: (app.genres ? app.genres.map(g => g.description).slice(0, 2).join(', ') : '遊戲').substring(0, 25),
+                      rating: app.metacritic ? (app.metacritic.score / 10).toFixed(1) : '9.0',
+                      price: app.is_free ? '免費遊玩 (Free)' : (app.price_overview ? app.price_overview.final_formatted : 'NT$ 1,280'),
+                      cover: app.header_image || `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`
+                    };
+                  }
+                }
+              }
+
+              // RAWG Fallback
+              if (!fetched) {
+                const res = await fetch(`https://api.rawg.io/api/games?key=d4957e0340384f9382ed0a80e14c1143&search=${encodeURIComponent(query)}&page_size=1`);
+                if (res.ok) {
+                  const data = await res.json();
+                  if (data.results && data.results.length > 0) {
+                    const game = data.results[0];
+                    fetched = {
+                      title: game.name.substring(0, 35),
+                      dev: (game.developers ? game.developers.map(d => d.name).join(', ') : '網絡遊戲').substring(0, 30),
+                      genre: (game.genres ? game.genres.slice(0, 2).map(g => g.name).join(', ') : 'Action').substring(0, 25),
+                      rating: game.rating ? (game.rating * 2).toFixed(1) : '9.0',
+                      price: '熱門發售中',
+                      cover: game.background_image || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80'
+                    };
+                  }
+                }
+              }
+
+              if (fetched) {
+                document.getElementById('cfgGameTitle').value = fetched.title;
+                document.getElementById('cfgGameDev').value = fetched.dev;
+                document.getElementById('cfgGameGenre').value = fetched.genre;
+                document.getElementById('cfgGameRating').value = fetched.rating;
+                document.getElementById('cfgGamePrice').value = fetched.price;
+                document.getElementById('cfgGameCover').value = fetched.cover;
+
+                // trigger preview update
+                const app = window.app || this;
+                if (app && app.updateModalState) app.updateModalState();
+              }
+            } catch (err) {
+              console.warn("Modal auto fetch error:", err);
+            } finally {
+              btnFetch.innerText = '自動抓取';
+              btnFetch.disabled = false;
+            }
+          });
+        }
+      }, 50);
     }
 
     container.querySelectorAll('input, select').forEach(input => {
