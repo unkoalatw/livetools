@@ -12,30 +12,28 @@
     html, body {
       margin: 0;
       padding: 0;
-      width: 100vw;
-      height: 100vh;
-      background: transparent;
+      width: 1920px;
+      height: 1080px;
+      background: transparent !important;
       overflow: hidden;
       font-family: 'Noto Sans TC', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     @keyframes om-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
     @keyframes om-pulse { 0%,100% { opacity:1; } 50% { opacity:.25; } }
     @keyframes om-shimmer { from { transform: translateX(-120%); } to { transform: translateX(320%); } }
 
-    /* Scaling Viewport Container to fit 1920x1080 in any screen without cropping or scrolling */
+    /* Fixed 1920x1080 Stage */
     #viewport-scaler {
       width: 1920px;
       height: 1080px;
-      position: relative;
+      position: absolute;
+      top: 0;
+      left: 0;
       background: transparent;
       color: #f5efe4;
       overflow: hidden;
-      transform-origin: center center;
-      flex-shrink: 0;
+      transform-origin: top left;
     }
 
     .editable-text {
