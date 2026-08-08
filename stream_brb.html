@@ -88,16 +88,16 @@
 
   <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:34px;z-index:10">
     <div style="display:flex;align-items:center;gap:14px;padding:12px 24px;background:#ffb020;color:#12100e">
-      <span class="editable-text" contenteditable="true" spellcheck="false" style="font:800 18px/1 'Archivo',sans-serif;letter-spacing:.34em">BE RIGHT BACK</span>
+      <span data-key="tag" class="editable-text" contenteditable="true" spellcheck="false" style="font:800 18px/1 'Archivo',sans-serif;letter-spacing:.34em">BE RIGHT BACK</span>
     </div>
     
-    <div class="editable-text" contenteditable="true" spellcheck="false" style="font:900 180px/1 'Noto Sans TC',sans-serif;letter-spacing:.03em">短暫離開</div>
+    <div data-key="title" class="editable-text" contenteditable="true" spellcheck="false" style="font:900 180px/1 'Noto Sans TC',sans-serif;letter-spacing:.03em">短暫離開</div>
     
     <div style="width:520px;height:8px;background:rgba(245,239,228,.12);position:relative;overflow:hidden">
       <div style="position:absolute;left:0;top:0;bottom:0;width:40%;background:#ffb020"></div>
     </div>
     
-    <div class="editable-text" contenteditable="true" spellcheck="false" style="font:500 34px/1.5 'Noto Sans TC',sans-serif;color:rgba(245,239,228,.6);text-align:center;max-width:920px;text-wrap:pretty">去補充一下水分，大約 5 分鐘後回來<br>聊天室先幫我聊著，音樂繼續放</div>
+    <div data-key="desc" class="editable-text" contenteditable="true" spellcheck="false" style="font:500 34px/1.5 'Noto Sans TC',sans-serif;color:rgba(245,239,228,.6);text-align:center;max-width:920px;text-wrap:pretty">去補充一下水分，大約 5 分鐘後回來<br>聊天室先幫我聊著，音樂繼續放</div>
     
     <div style="display:flex;align-items:center;gap:20px;padding:18px 30px;background:#1c1915;border-left:8px solid #ffb020">
       <div style="display:flex;align-items:flex-end;gap:4px;height:26px">
@@ -106,23 +106,87 @@
         <div style="width:5px;background:#ffb020;animation:om-eq 1s ease-in-out .4s infinite"></div>
         <div style="width:5px;background:#ffb020;animation:om-eq 1s ease-in-out .6s infinite"></div>
       </div>
-      <span class="editable-text" contenteditable="true" spellcheck="false" style="font:500 26px/1.3 'Noto Sans TC',sans-serif;color:rgba(245,239,228,.8)">正在播放・lofi 等待清單</span>
+      <span data-key="music" class="editable-text" contenteditable="true" spellcheck="false" style="font:500 26px/1.3 'Noto Sans TC',sans-serif;color:rgba(245,239,228,.8)">正在播放・lofi 等待清單</span>
     </div>
   </div>
 
   <div style="position:absolute;left:0;right:0;bottom:0;height:100px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;box-sizing:border-box;background:#0b0a08;border-top:3px solid #ffb020;z-index:10">
     <div style="display:flex;align-items:center;gap:16px">
       <div style="width:44px;height:44px;border:2px solid #ffb020;display:flex;align-items:center;justify-content:center;color:#ffb020;font-weight:bold"><i class="fa-solid fa-play"></i></div>
-      <span class="editable-text" contenteditable="true" spellcheck="false" style="font:900 30px/1.2 'Noto Sans TC',sans-serif;letter-spacing:.04em">尾熊</span>
+      <span data-key="name" class="editable-text" contenteditable="true" spellcheck="false" style="font:900 30px/1.2 'Noto Sans TC',sans-serif;letter-spacing:.04em">尾熊</span>
     </div>
     <div style="display:flex;align-items:baseline;gap:16px">
-      <span class="editable-text" contenteditable="true" spellcheck="false" style="font:800 13px/1 'Archivo',sans-serif;letter-spacing:.24em;color:rgba(245,239,228,.42)">LOCAL TIME</span>
+      <span data-key="time_label" class="editable-text" contenteditable="true" spellcheck="false" style="font:800 13px/1 'Archivo',sans-serif;letter-spacing:.24em;color:rgba(245,239,228,.42)">LOCAL TIME</span>
       <span id="uptime-display" style="font:600 46px/1 'Teko',sans-serif;color:#ffb020;font-variant-numeric:tabular-nums;display:inline-block;width:155px;text-align:center;">00:00:00</span>
     </div>
+  </div>
+
+  <!-- Share URL Control Panel -->
+  <div style="position:fixed;top:16px;right:16px;z-index:999">
+    <button onclick="copyShareUrl()" style="background:rgba(28,25,21,0.9);color:#ffb020;border:1px solid rgba(255,176,32,0.5);padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.5);display:flex;align-items:center;gap:6px">
+      <i class="fa-solid fa-link"></i> 複製包含修改文字的 OBS 網址
+    </button>
   </div>
 </div>
 
 <script>
+  // Save & Load Editable State via URL Query Params & localStorage
+  const STORAGE_KEY = 'stream_brb_data';
+  const urlParams = new URLSearchParams(window.location.search);
+
+  function loadTextState() {
+    document.querySelectorAll('.editable-text[data-key]').forEach(el => {
+      const key = el.getAttribute('data-key');
+      const fromUrl = urlParams.get(key);
+      const fromStorage = localStorage.getItem(`${STORAGE_KEY}_${key}`);
+
+      if (fromUrl) {
+        el.innerHTML = decodeURIComponent(fromUrl);
+      } else if (fromStorage) {
+        el.innerHTML = fromStorage;
+      }
+
+      // Auto update URL and localStorage on user edit
+      el.addEventListener('input', () => {
+        const val = el.innerHTML.trim();
+        localStorage.setItem(`${STORAGE_KEY}_${key}`, val);
+        updateUrlQuery();
+      });
+    });
+  }
+
+  function getShareUrl() {
+    const params = new URLSearchParams();
+    document.querySelectorAll('.editable-text[data-key]').forEach(el => {
+      const key = el.getAttribute('data-key');
+      params.set(key, encodeURIComponent(el.innerHTML.trim()));
+    });
+    return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+  }
+
+  function updateUrlQuery() {
+    window.history.replaceState({}, '', getShareUrl());
+  }
+
+  function copyShareUrl() {
+    const shareUrl = getShareUrl();
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      showToast("已成功複製 OBS 網址 (內含已儲存的文字)！");
+    }).catch(() => {
+      prompt("請複製以下 OBS 網址：", shareUrl);
+    });
+  }
+
+  function showToast(msg) {
+    const toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#ffb020;color:#12100e;padding:10px 20px;border-radius:10px;font-weight:bold;font-size:13px;z-index:9999;box-shadow:0 6px 20px rgba(0,0,0,0.5);';
+    toast.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${msg}`;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+
+  window.addEventListener('DOMContentLoaded', loadTextState);
+
   // Auto Rescale Function to perfectly scale 1920x1080 stage inside any window without crop
   function autoScaleViewport() {
     const scaler = document.getElementById('viewport-scaler');
@@ -138,7 +202,6 @@
   }
 
   window.addEventListener('resize', autoScaleViewport);
-  window.addEventListener('DOMContentLoaded', autoScaleViewport);
 
   // Real System Clock Timer (HH:MM:SS)
   function updateRealTimeClock() {

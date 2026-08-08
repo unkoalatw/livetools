@@ -63,17 +63,17 @@
     <div style="flex:none;display:flex;align-items:center;gap:22px;padding:0 34px;background:#ffb020;color:#12100e;clip-path:polygon(0 0,100% 0,calc(100% - 30px) 100%,0 100%);padding-right:56px">
       <div style="flex:none;width:56px;height:56px;border:2px solid rgba(18,16,14,.5);display:flex;align-items:center;justify-content:center;color:#12100e;font-size:24px"><i class="fa-solid fa-gamepad"></i></div>
       <div style="display:flex;flex-direction:column;gap:2px">
-        <div class="editable-text" contenteditable="true" spellcheck="false" style="font:900 36px/1.15 'Noto Sans TC',sans-serif;letter-spacing:.04em">尾熊</div>
-        <div class="editable-text" contenteditable="true" spellcheck="false" style="font:800 14px/1.2 'Archivo',sans-serif;letter-spacing:.22em;opacity:.72">KOALA / GAMING</div>
+        <div data-key="name" class="editable-text" contenteditable="true" spellcheck="false" style="font:900 36px/1.15 'Noto Sans TC',sans-serif;letter-spacing:.04em">尾熊</div>
+        <div data-key="sub" class="editable-text" contenteditable="true" spellcheck="false" style="font:800 14px/1.2 'Archivo',sans-serif;letter-spacing:.22em;opacity:.72">KOALA / GAMING</div>
       </div>
     </div>
 
     <div style="flex:1;min-width:0;display:flex;align-items:center;gap:22px;padding:0 30px;overflow:hidden">
-      <div class="editable-text" contenteditable="true" spellcheck="false" style="flex:none;font:800 15px/1 'Archivo',sans-serif;letter-spacing:.26em;color:#ffb020;border-left:3px solid #ffb020;padding-left:14px">NOTICE</div>
+      <div data-key="notice_label" class="editable-text" contenteditable="true" spellcheck="false" style="flex:none;font:800 15px/1 'Archivo',sans-serif;letter-spacing:.26em;color:#ffb020;border-left:3px solid #ffb020;padding-left:14px">NOTICE</div>
       <div style="flex:1;min-width:0;overflow:hidden;position:relative;height:36px">
         <div style="position:absolute;top:0;left:0;display:flex;white-space:nowrap;animation:om-marquee 34s linear infinite">
-          <span class="editable-text" contenteditable="true" spellcheck="false" style="font:500 27px/36px 'Noto Sans TC',sans-serif;color:rgba(245,239,228,.88);padding-right:80px">今天挑戰無傷通關第三章，達成就抽遊戲序號　　本週六晚間八點有觀眾同樂場，記得追蹤開啟通知　　抖內目標達成會加碼直播一小時</span>
-          <span class="editable-text" contenteditable="true" spellcheck="false" style="font:500 27px/36px 'Noto Sans TC',sans-serif;color:rgba(245,239,228,.88);padding-right:80px">今天挑戰無傷通關第三章，達成就抽遊戲序號　　本週六晚間八點有觀眾同樂場，記得追蹤開啟通知　　抖內目標達成會加碼直播一小時</span>
+          <span data-key="notice_text" class="editable-text" contenteditable="true" spellcheck="false" style="font:500 27px/36px 'Noto Sans TC',sans-serif;color:rgba(245,239,228,.88);padding-right:80px">今天挑戰無傷通關第三章，達成就抽遊戲序號　　本週六晚間八點有觀眾同樂場，記得追蹤開啟通知　　抖內目標達成會加碼直播一小時</span>
+          <span data-key="notice_text" class="editable-text" contenteditable="true" spellcheck="false" style="font:500 27px/36px 'Noto Sans TC',sans-serif;color:rgba(245,239,228,.88);padding-right:80px">今天挑戰無傷通關第三章，達成就抽遊戲序號　　本週六晚間八點有觀眾同樂場，記得追蹤開啟通知　　抖內目標達成會加碼直播一小時</span>
         </div>
       </div>
     </div>
@@ -81,14 +81,14 @@
     <div style="flex:none;display:flex;align-items:center;gap:0;padding-right:0">
       <div style="display:flex;align-items:center;gap:10px;padding:0 22px;height:100%;background:#d93a26">
         <div style="width:9px;height:9px;background:#fff;animation:om-pulse 1.3s ease-in-out infinite"></div>
-        <span class="editable-text" contenteditable="true" spellcheck="false" style="font:800 17px/1 'Archivo',sans-serif;letter-spacing:.24em;color:#fff">LIVE</span>
+        <span data-key="live_label" class="editable-text" contenteditable="true" spellcheck="false" style="font:800 17px/1 'Archivo',sans-serif;letter-spacing:.24em;color:#fff">LIVE</span>
       </div>
       <div style="display:flex;align-items:baseline;gap:12px;padding:0 26px;border-left:1px solid rgba(245,239,228,.14)">
-        <span class="editable-text" contenteditable="true" spellcheck="false" style="font:800 13px/1 'Archivo',sans-serif;letter-spacing:.2em;color:rgba(245,239,228,.42)">UPTIME</span>
+        <span data-key="uptime_label" class="editable-text" contenteditable="true" spellcheck="false" style="font:800 13px/1 'Archivo',sans-serif;letter-spacing:.2em;color:rgba(245,239,228,.42)">UPTIME</span>
         <span id="uptime-display" style="font:600 46px/1 'Teko',sans-serif;letter-spacing:.02em;color:#ffb020;font-variant-numeric:tabular-nums;display:inline-block;width:155px;text-align:center;">00:00:00</span>
       </div>
       <div style="display:flex;align-items:baseline;gap:12px;padding:0 30px 0 26px;border-left:1px solid rgba(245,239,228,.14)">
-        <span class="editable-text" contenteditable="true" spellcheck="false" style="font:800 13px/1 'Archivo',sans-serif;letter-spacing:.2em;color:rgba(245,239,228,.42)">TIME</span>
+        <span data-key="time_label" class="editable-text" contenteditable="true" spellcheck="false" style="font:800 13px/1 'Archivo',sans-serif;letter-spacing:.2em;color:rgba(245,239,228,.42)">TIME</span>
         <span id="clock-display" style="font:600 46px/1 'Teko',sans-serif;letter-spacing:.02em;font-variant-numeric:tabular-nums;display:inline-block;width:155px;text-align:center;">00:00:00</span>
       </div>
     </div>
@@ -102,9 +102,9 @@
   <div style="position:absolute;left:0;right:0;bottom:0;height:118px;display:flex;align-items:center;gap:0;background:#12100e;border-top:3px solid #ffb020;z-index:10">
     <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;padding:0 34px">
       <div style="display:flex;align-items:baseline;gap:16px">
-        <span class="editable-text" contenteditable="true" spellcheck="false" style="font:800 14px/1 'Archivo',sans-serif;letter-spacing:.26em;color:#ffb020">DONATION GOAL</span>
-        <span class="editable-text" contenteditable="true" spellcheck="false" style="font:500 25px/1.2 'Noto Sans TC',sans-serif;color:rgba(245,239,228,.7)">抖內目標・加碼一小時直播</span>
-        <span style="margin-left:auto;font:600 44px/1 'Teko',sans-serif;font-variant-numeric:tabular-nums"><span id="goal-current-el" class="editable-text" contenteditable="true" spellcheck="false" style="color:#ffb020">NT$12,480</span><span id="goal-target-el" class="editable-text" contenteditable="true" spellcheck="false" style="color:rgba(245,239,228,.35)"> / 20,000</span></span>
+        <span data-key="goal_label" class="editable-text" contenteditable="true" spellcheck="false" style="font:800 14px/1 'Archivo',sans-serif;letter-spacing:.26em;color:#ffb020">DONATION GOAL</span>
+        <span data-key="goal_title" class="editable-text" contenteditable="true" spellcheck="false" style="font:500 25px/1.2 'Noto Sans TC',sans-serif;color:rgba(245,239,228,.7)">抖內目標・加碼一小時直播</span>
+        <span style="margin-left:auto;font:600 44px/1 'Teko',sans-serif;font-variant-numeric:tabular-nums"><span id="goal-current-el" data-key="goal_current" class="editable-text" contenteditable="true" spellcheck="false" style="color:#ffb020">NT$12,480</span><span id="goal-target-el" data-key="goal_target" class="editable-text" contenteditable="true" spellcheck="false" style="color:rgba(245,239,228,.35)"> / 20,000</span></span>
       </div>
       <div style="position:relative;height:18px;background:rgba(245,239,228,.09);overflow:hidden">
         <div id="goal-bar-fill" style="position:absolute;left:0;top:0;bottom:0;width:62.4%;background:repeating-linear-gradient(115deg,#ffb020 0 14px,#ffc44f 14px 28px);overflow:hidden;transition:width 0.4s ease-out">
@@ -116,62 +116,111 @@
     <div style="flex:none;align-self:stretch;display:flex;align-items:center;gap:28px;padding:0 34px 0 40px;background:#ffb020;color:#12100e;clip-path:polygon(30px 0,100% 0,100% 100%,0 100%)">
       <div style="display:flex;align-items:center;gap:11px">
         <div style="width:30px;height:30px;border:2px solid rgba(18,16,14,.45);display:flex;align-items:center;justify-content:center;color:#12100e"><i class="fa-brands fa-twitch"></i></div>
-        <span class="editable-text" contenteditable="true" spellcheck="false" style="font:700 22px/1 'Archivo',sans-serif">@koala_live</span>
+        <span data-key="twitch" class="editable-text" contenteditable="true" spellcheck="false" style="font:700 22px/1 'Archivo',sans-serif">@koala_live</span>
       </div>
       <div style="display:flex;align-items:center;gap:11px">
         <div style="width:30px;height:30px;border:2px solid rgba(18,16,14,.45);display:flex;align-items:center;justify-content:center;color:#12100e"><i class="fa-brands fa-discord"></i></div>
-        <span class="editable-text" contenteditable="true" spellcheck="false" style="font:700 22px/1 'Archivo',sans-serif">discord.gg/koala</span>
+        <span data-key="discord" class="editable-text" contenteditable="true" spellcheck="false" style="font:700 22px/1 'Archivo',sans-serif">discord.gg/koala</span>
       </div>
       <div style="display:flex;align-items:center;gap:11px">
         <div style="width:30px;height:30px;border:2px solid rgba(18,16,14,.45);display:flex;align-items:center;justify-content:center;color:#12100e"><i class="fa-brands fa-instagram"></i></div>
-        <span class="editable-text" contenteditable="true" spellcheck="false" style="font:700 22px/1 'Archivo',sans-serif">@koala.ig</span>
+        <span data-key="ig" class="editable-text" contenteditable="true" spellcheck="false" style="font:700 22px/1 'Archivo',sans-serif">@koala.ig</span>
       </div>
     </div>
   </div>
 
+  <!-- Share URL Control Panel -->
+  <div style="position:fixed;top:16px;right:16px;z-index:999">
+    <button onclick="copyShareUrl()" style="background:rgba(28,25,21,0.9);color:#ffb020;border:1px solid rgba(255,176,32,0.5);padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.5);display:flex;align-items:center;gap:6px">
+      <i class="fa-solid fa-link"></i> 複製包含修改文字的 OBS 網址
+    </button>
+  </div>
 </div>
 
 <script>
-  // Auto Rescale Function to perfectly scale 1920x1080 stage inside any window without crop
+  // Save & Load Editable State via URL Query Params & localStorage
+  const STORAGE_KEY = 'stream_hud_data';
+  const urlParams = new URLSearchParams(window.location.search);
+
+  function loadTextState() {
+    document.querySelectorAll('.editable-text[data-key]').forEach(el => {
+      const key = el.getAttribute('data-key');
+      const fromUrl = urlParams.get(key);
+      const fromStorage = localStorage.getItem(`${STORAGE_KEY}_${key}`);
+
+      if (fromUrl) {
+        el.innerHTML = decodeURIComponent(fromUrl);
+      } else if (fromStorage) {
+        el.innerHTML = fromStorage;
+      }
+
+      // Auto update URL and localStorage on user edit
+      el.addEventListener('input', () => {
+        const val = el.innerHTML.trim();
+        localStorage.setItem(`${STORAGE_KEY}_${key}`, val);
+        updateUrlQuery();
+        if (typeof updateProgressBar === 'function') updateProgressBar();
+      });
+    });
+  }
+
+  function getShareUrl() {
+    const params = new URLSearchParams();
+    document.querySelectorAll('.editable-text[data-key]').forEach(el => {
+      const key = el.getAttribute('data-key');
+      params.set(key, encodeURIComponent(el.innerHTML.trim()));
+    });
+    return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+  }
+
+  function updateUrlQuery() {
+    window.history.replaceState({}, '', getShareUrl());
+  }
+
+  function copyShareUrl() {
+    const shareUrl = getShareUrl();
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      showToast("已成功複製 OBS 網址 (內含已儲存的文字)！");
+    }).catch(() => {
+      prompt("請複製以下 OBS 網址：", shareUrl);
+    });
+  }
+
+  function showToast(msg) {
+    const toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#ffb020;color:#12100e;padding:10px 20px;border-radius:10px;font-weight:bold;font-size:13px;z-index:9999;box-shadow:0 6px 20px rgba(0,0,0,0.5);';
+    toast.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${msg}`;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+
+  // Auto Rescale Function
   function autoScaleViewport() {
     const scaler = document.getElementById('viewport-scaler');
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-    
-    // Scale factor based on aspect ratio
-    const scaleX = windowWidth / 1920;
-    const scaleY = windowHeight / 1080;
-    const scale = Math.min(scaleX, scaleY);
-    
+    const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
     scaler.style.transform = `scale(${scale})`;
   }
 
   window.addEventListener('resize', autoScaleViewport);
-  window.addEventListener('DOMContentLoaded', autoScaleViewport);
+  window.addEventListener('DOMContentLoaded', () => {
+    loadTextState();
+    autoScaleViewport();
+    updateProgressBar();
+    setInterval(updateClocks, 1000);
+    updateClocks();
+  });
 
   // Uptime & Real Time Clock Logic
   const startTime = Date.now();
-
   function updateClocks() {
-    // 1. Real System Local Time (HH:MM:SS)
     const now = new Date();
-    const h = String(now.getHours()).padStart(2, '0');
-    const m = String(now.getMinutes()).padStart(2, '0');
-    const s = String(now.getSeconds()).padStart(2, '0');
-    const clockEl = document.getElementById('clock-display');
-    if (clockEl) clockEl.textContent = `${h}:${m}:${s}`;
+    document.getElementById('clock-display').textContent = 
+      `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
 
-    // 2. Stream Uptime Timer (HH:MM:SS)
     const elapsed = Math.max(0, Math.floor((Date.now() - startTime) / 1000));
-    const upH = String(Math.floor(elapsed / 3600)).padStart(2, '0');
-    const upM = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
-    const upS = String(elapsed % 60).padStart(2, '0');
-    const uptimeEl = document.getElementById('uptime-display');
-    if (uptimeEl) uptimeEl.textContent = `${upH}:${upM}:${upS}`;
+    document.getElementById('uptime-display').textContent = 
+      `${String(Math.floor(elapsed / 3600)).padStart(2, '0')}:${String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0')}:${String(elapsed % 60).padStart(2, '0')}`;
   }
-
-  setInterval(updateClocks, 1000);
-  updateClocks();
 
   // Dynamic Goal Progress Bar Calculation
   function updateProgressBar() {
@@ -180,29 +229,10 @@
     const fillEl = document.getElementById('goal-bar-fill');
     if (!currentEl || !targetEl || !fillEl) return;
 
-    // Extract numbers from text (e.g., "NT$12,480" -> 12480, " / 20,000" -> 20000)
     const currentNum = parseFloat(currentEl.textContent.replace(/[^0-9.]/g, '')) || 0;
     const targetNum = parseFloat(targetEl.textContent.replace(/[^0-9.]/g, '')) || 1;
-
-    let percentage = (currentNum / targetNum) * 100;
-    percentage = Math.min(100, Math.max(0, percentage)); // Clamp between 0% and 100%
-
-    fillEl.style.width = percentage.toFixed(1) + '%';
+    fillEl.style.width = Math.min(100, Math.max(0, (currentNum / targetNum) * 100)).toFixed(1) + '%';
   }
-
-  const currentEl = document.getElementById('goal-current-el');
-  const targetEl = document.getElementById('goal-target-el');
-  if (currentEl) {
-    currentEl.addEventListener('input', updateProgressBar);
-    currentEl.addEventListener('blur', updateProgressBar);
-  }
-  if (targetEl) {
-    targetEl.addEventListener('input', updateProgressBar);
-    targetEl.addEventListener('blur', updateProgressBar);
-  }
-
-  // Initial calculation
-  updateProgressBar();
 </script>
 </body>
 </html>
