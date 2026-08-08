@@ -128,9 +128,9 @@
     </div>
   </div>
 
-  <!-- Share URL Control Panel -->
-  <div style="position:fixed;top:16px;right:16px;z-index:999">
-    <button onclick="copyShareUrl()" style="background:rgba(28,25,21,0.9);color:#ffb020;border:1px solid rgba(255,176,32,0.5);padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.5);display:flex;align-items:center;gap:6px">
+  <!-- Share URL Control Panel (Hidden by default, shown on edit, auto-hides after 3s) -->
+  <div id="share-btn-wrapper" style="position:fixed;top:16px;right:16px;z-index:999;opacity:0;pointer-events:none;transition:opacity 0.4s ease;">
+    <button onclick="copyShareUrl()" style="background:rgba(28,25,21,0.95);color:#ffb020;border:1px solid rgba(255,176,32,0.6);padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.5);display:flex;align-items:center;gap:6px">
       <i class="fa-solid fa-link"></i> 複製包含修改文字的 OBS 網址
     </button>
   </div>
@@ -140,6 +140,20 @@
   // Save & Load Editable State via URL Query Params & localStorage
   const STORAGE_KEY = 'stream_ended_data';
   const urlParams = new URLSearchParams(window.location.search);
+  let shareBtnTimer = null;
+
+  function showShareButtonTemp() {
+    const wrapper = document.getElementById('share-btn-wrapper');
+    if (!wrapper) return;
+    wrapper.style.opacity = '1';
+    wrapper.style.pointerEvents = 'auto';
+
+    if (shareBtnTimer) clearTimeout(shareBtnTimer);
+    shareBtnTimer = setTimeout(() => {
+      wrapper.style.opacity = '0';
+      wrapper.style.pointerEvents = 'none';
+    }, 3000);
+  }
 
   function loadTextState() {
     document.querySelectorAll('.editable-text[data-key]').forEach(el => {
@@ -153,11 +167,12 @@
         el.innerHTML = fromStorage;
       }
 
-      // Auto update URL and localStorage on user edit
+      // Auto update URL, localStorage and show button on user edit
       el.addEventListener('input', () => {
         const val = el.innerHTML.trim();
         localStorage.setItem(`${STORAGE_KEY}_${key}`, val);
         updateUrlQuery();
+        showShareButtonTemp();
       });
     });
   }
