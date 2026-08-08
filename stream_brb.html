@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OBS 暫離休息畫面 - Stream BRB Screen (1920x1080 Responsive)</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Teko:wght@600&family=Archivo:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #12100e;
+      overflow: hidden;
+      font-family: 'Noto Sans TC', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes om-eq { 0%,100% { height:22%; } 50% { height:100%; } }
+    @keyframes om-slide { from { background-position:0 0; } to { background-position:120px 0; } }
+
+    /* Scaling Viewport Container to fit 1920x1080 in any screen without cropping or scrolling */
+    #viewport-scaler {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      background: #12100e;
+      color: #f5efe4;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-origin: center center;
+      flex-shrink: 0;
+    }
+
+    .editable-text {
+      outline: none;
+      border: 1px dashed transparent;
+      transition: border-color 0.2s, background-color 0.2s;
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+    .editable-text:hover {
+      border-color: rgba(255, 176, 32, 0.5);
+      background: rgba(255, 176, 32, 0.08);
+      cursor: text;
+    }
+    .editable-text:focus {
+      border-color: #ffb020;
+      background: rgba(255, 176, 32, 0.15);
+    }
+
+    /* OBS Control panel */
+    #control-panel {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 9999;
+    }
+    .glass-btn {
+      background: rgba(28, 25, 21, 0.9);
+      color: #ffb020;
+      border: 1px solid rgba(255, 176, 32, 0.4);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+    }
+    .glass-btn:hover {
+      background: #ffb020;
+      color: #12100e;
+    }
+  </style>
+</head>
+<body>
+
+<div id="viewport-scaler">
+  <!-- Dynamic Stripe Background Animation -->
+  <div style="position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,176,32,.05) 0 60px,transparent 60px 120px);animation:om-slide 6s linear infinite"></div>
+
+  <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:34px;z-index:10">
+    <div style="display:flex;align-items:center;gap:14px;padding:12px 24px;background:#ffb020;color:#12100e">
+      <span class="editable-text" contenteditable="true" spellcheck="false" style="font:800 18px/1 'Archivo',sans-serif;letter-spacing:.34em">BE RIGHT BACK</span>
+    </div>
+    
+    <div class="editable-text" contenteditable="true" spellcheck="false" style="font:900 180px/1 'Noto Sans TC',sans-serif;letter-spacing:.03em">短暫離開</div>
+    
+    <div style="width:520px;height:8px;background:rgba(245,239,228,.12);position:relative;overflow:hidden">
+      <div style="position:absolute;left:0;top:0;bottom:0;width:40%;background:#ffb020"></div>
+    </div>
+    
+    <div class="editable-text" contenteditable="true" spellcheck="false" style="font:500 34px/1.5 'Noto Sans TC',sans-serif;color:rgba(245,239,228,.6);text-align:center;max-width:920px;text-wrap:pretty">去補充一下水分，大約 5 分鐘後回來<br>聊天室先幫我聊著，音樂繼續放</div>
+    
+    <div style="display:flex;align-items:center;gap:20px;padding:18px 30px;background:#1c1915;border-left:8px solid #ffb020">
+      <div style="display:flex;align-items:flex-end;gap:4px;height:26px">
+        <div style="width:5px;background:#ffb020;animation:om-eq 1s ease-in-out infinite"></div>
+        <div style="width:5px;background:#ffb020;animation:om-eq 1s ease-in-out .2s infinite"></div>
+        <div style="width:5px;background:#ffb020;animation:om-eq 1s ease-in-out .4s infinite"></div>
+        <div style="width:5px;background:#ffb020;animation:om-eq 1s ease-in-out .6s infinite"></div>
+      </div>
+      <span class="editable-text" contenteditable="true" spellcheck="false" style="font:500 26px/1.3 'Noto Sans TC',sans-serif;color:rgba(245,239,228,.8)">正在播放・lofi 等待清單</span>
+    </div>
+  </div>
+
+  <div style="position:absolute;left:0;right:0;bottom:0;height:100px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;box-sizing:border-box;background:#0b0a08;border-top:3px solid #ffb020;z-index:10">
+    <div style="display:flex;align-items:center;gap:16px">
+      <div style="width:44px;height:44px;border:2px solid #ffb020;display:flex;align-items:center;justify-content:center;color:#ffb020;font-weight:bold"><i class="fa-solid fa-play"></i></div>
+      <span class="editable-text" contenteditable="true" spellcheck="false" style="font:900 30px/1.2 'Noto Sans TC',sans-serif;letter-spacing:.04em">尾熊</span>
+    </div>
+    <div style="display:flex;align-items:baseline;gap:16px">
+      <span class="editable-text" contenteditable="true" spellcheck="false" style="font:800 13px/1 'Archivo',sans-serif;letter-spacing:.24em;color:rgba(245,239,228,.42)">UPTIME</span>
+      <span id="uptime-display" style="font:600 46px/1 'Teko',sans-serif;color:#ffb020;font-variant-numeric:tabular-nums">03:42:18</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Auto Rescale Function to perfectly scale 1920x1080 stage inside any window without crop
+  function autoScaleViewport() {
+    const scaler = document.getElementById('viewport-scaler');
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    
+    // Scale factor based on aspect ratio
+    const scaleX = windowWidth / 1920;
+    const scaleY = windowHeight / 1080;
+    const scale = Math.min(scaleX, scaleY);
+    
+    scaler.style.transform = `scale(${scale})`;
+  }
+
+  window.addEventListener('resize', autoScaleViewport);
+  window.addEventListener('DOMContentLoaded', autoScaleViewport);
+
+  // Uptime Timer Counter
+  let startTime = Date.now() - (3*3600 + 42*60 + 18)*1000;
+  setInterval(() => {
+    const elapsed = Math.max(0, Math.floor((Date.now() - startTime) / 1000));
+    const h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+    const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+    const s = String(elapsed % 60).padStart(2, '0');
+    const el = document.getElementById('uptime-display');
+    if (el) el.textContent = `${h}:${m}:${s}`;
+  }, 1000);
+</script>
+</body>
+</html>
